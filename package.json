@@ -1,0 +1,57 @@
+{
+  "name": "@recyclerie/api",
+  "version": "0.1.0",
+  "description": "Shared API contracts for recyclerie backend and frontend",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./enums": {
+      "types": "./dist/enums/index.d.ts",
+      "import": "./dist/enums/index.js"
+    },
+    "./primitives/zod": {
+      "types": "./dist/primitives/zod.d.ts",
+      "import": "./dist/primitives/zod.js"
+    },
+    "./types/pagination": {
+      "types": "./dist/types/pagination.d.ts",
+      "import": "./dist/types/pagination.js"
+    },
+    "./types/errors": {
+      "types": "./dist/types/errors.d.ts",
+      "import": "./dist/types/errors.js"
+    },
+    "./types/response": {
+      "types": "./dist/types/response.d.ts",
+      "import": "./dist/types/response.js"
+    },
+    "./schemas/*": {
+      "types": "./dist/schemas/*.d.ts",
+      "import": "./dist/schemas/*.js"
+    },
+    "./responses/*": {
+      "types": "./dist/responses/*.d.ts",
+      "import": "./dist/responses/*.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
+  },
+  "peerDependencies": {
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "zod": "^4.3.5"
+  }
+}
