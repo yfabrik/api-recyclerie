@@ -37,6 +37,10 @@
     "./responses/*": {
       "types": "./dist/responses/*.d.ts",
       "import": "./dist/responses/*.js"
+    },
+    "./domain/*": {
+      "types": "./dist/domain/*.d.ts",
+      "import": "./dist/domain/*.js"
     }
   },
   "files": [
