@@ -22,7 +22,7 @@ export interface DonationDto {
   estimated_value: number | null;
   status: DonationStatus;
   weight: number;
-  recyclery_id?: RecycleryDto["id"] | null;
+  recyclery_id?: RecycleryDto["id"] | null;//TODO required ?
   received_by?: UserDto["id"] | null;
   received_at?: string;
   createdAt: string;

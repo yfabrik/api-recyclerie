@@ -10,7 +10,7 @@ export interface PromotionDto {
   startDate: string;
   endDate: string | null;
   isActive: boolean;
-  promotionValue: number;
+  promotionValue: number;//TODO can only be 0-100
   category_id: CategoryDto["id"];
   createdAt: string;
   updatedAt: string;

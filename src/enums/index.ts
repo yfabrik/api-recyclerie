@@ -70,6 +70,7 @@ export const PAYMENT_METHODS = [
 ] as const;
 export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
 
+//TODO extend payment methods
 export const SALES_PAYMENT_METHODS = [
   "cash",
   "card",

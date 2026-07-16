@@ -16,11 +16,11 @@ export interface WasteDisposalDto {
   id: number;
   disposal_date: string;
   disposal_type: WasteDisposalType;
-  weight_kg: number | string;
-  volume_m3?: number | string | null;
+  weight_kg: number | string;//TODO 
+  volume_m3?: number | string | null;//TODO 
   transport_method?: string | null;
   transport_company?: string | null;
-  transport_cost?: number | string | null;
+  transport_cost?: number | string | null;//TODO 
   notes?: string | null;
   category_id: CategoryDto["id"];
   subcategory_id?: CategoryDto["id"] | null;

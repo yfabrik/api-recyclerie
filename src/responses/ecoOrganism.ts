@@ -40,6 +40,7 @@ export type EcoOrganismRefDto = Pick<
   | "is_active"
 >;
 
+//TODO should all be number ?
 export interface EcoOrganismStatsDto {
   total_eco_organisms?: number | string;
   active_eco_organisms?: number | string | null;
@@ -60,7 +61,7 @@ export interface EcoOrgQuarterCategoryBreakdownDto {
     subcategories: EcoOrgWeightedCategoryDto[];
   })[];
   /** Month range label, e.g. "01-2026--03-2026" */
-  labelMMYYYY?: EcoOrgQuarterMonthRangeLabel;
+  labelMMYYYY?: EcoOrgQuarterMonthRangeLabel;//TODO not used anymore
 }
 
 export type EcoOrgQuarterInBySourceTypeDto = Record<

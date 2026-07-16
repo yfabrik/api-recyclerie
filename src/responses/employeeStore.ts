@@ -5,6 +5,7 @@ import type {
 import type { RecycleryRefDto } from "./recycleries.js";
 import type { EmployeeDto } from "./employees.js";
 
+//TODO ??
 export interface EmployeeStoreAssignmentDto extends RecycleryRefDto {
   is_primary?: boolean;
 }

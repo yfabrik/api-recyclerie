@@ -22,10 +22,10 @@ export interface CashSessionDto {
   user_id: UserDto["id"];
   createdAt: string;
   updatedAt: string;
-  transactions_count?: number | string;
-  total_sales?: number | string;
+  transactions_count?: number | string;//TODO where can i find it ? is it really string ?
+  total_sales?: number | string;//TODO where can i find it ? is it really string ?
   CashRegister?: CashRegisterSessionRefDto | null;
-  Recyclery?: RecycleryRefDto | null;
+  Recyclery?: RecycleryRefDto | null;//TODO used somewhere ? i only get it through cashregister
   User?: UserRefDto | null;
   SalesTransactions?: SalesTransactionDto[];
 }

@@ -1,10 +1,9 @@
 import type {
-  CashSessionStatus,
   PaymentMethod,
   PromotionType,
   SalesPaymentMethod,
   SalesTransactionStatus,
-  TransactionType,
+  TransactionType
 } from "../enums/index.js";
 import type {
   EmailAddress,
@@ -15,10 +14,6 @@ import type {
   ApiMessageResponse,
   ApiPaginatedResponse,
 } from "../types/response.js";
-import type {
-  CashRegisterDto,
-  CashRegisterSessionRefDto,
-} from "./cashRegister.js";
 import type { CashSessionDto } from "./cashSession.js";
 import type { CategoryDto } from "./categories.js";
 import type { GiftCardDto, GiftCardSummaryDto } from "./giftCards.js";
@@ -60,20 +55,9 @@ export interface TransactionItemLineDto {
 
 /** A labeled item as it appears inside a sale, carrying its `TransactionItem` line data. */
 export interface SalesTransactionItemDto extends LabeledItemDto {
-  TransactionItem?: TransactionItemLineDto | null;
+  TransactionItem: TransactionItemLineDto ;
 }
 
-export interface SalesTransactionCashSessionDto {
-  id: number;
-  opening_amount: number;
-  closing_amount?: number | null;
-  expected_amount?: number | null;
-  status: CashSessionStatus;
-  cash_register_id: CashRegisterDto["id"];
-  user_id: UserDto["id"];
-  CashRegister?: CashRegisterSessionRefDto | null;
-  User?: UserRefDto | null;
-}
 
 export interface SalesTransactionDto {
   id: number;
@@ -91,16 +75,16 @@ export interface SalesTransactionDto {
   status: SalesTransactionStatus;
   cash_session_id: CashSessionDto["id"];
   created_by: UserDto["id"];
-  transactionId?: SalesTransactionDto["id"] | null;
+  transactionId?: SalesTransactionDto["id"] | null;//TODO required ?
   createdAt: string;
   updatedAt: string;
   items?: SalesTransactionItemDto[];
   payments?: TransactionPaymentDto[];
   globalPromotions?: TransactionGlobalPromotionDto[];
-  CashSession?: SalesTransactionCashSessionDto | null;
+  CashSession?: CashSessionDto | null;
   User?: UserRefDto | null;
   refunds?: SalesTransactionDto[];
-  giftCards?: GiftCardSummaryDto[];
+  giftCards?: GiftCardSummaryDto[];//TODO wht not ref
 }
 
 export interface SalesTransactionStatsDto {
@@ -111,9 +95,9 @@ export interface SalesTransactionStatsDto {
   sessions_count: number | string;
   total_refunded: number;
   payment_methods: {
-    payment_method: string;
-    total: number | string;
-    count: number | string;
+    payment_method: PaymentMethod;
+    total: number | string;//TODO 
+    count: number | string;//TODO 
   }[];
   by_day: {
     date: string;
@@ -122,7 +106,7 @@ export interface SalesTransactionStatsDto {
   }[];
   by_category: {
     category_id: CategoryDto["id"] | string | null;
-    category_name: string | null;
+    category_name: CategoryDto["name"] | null;
     total_quantity: number;
     total_price_sum: number;
   }[];

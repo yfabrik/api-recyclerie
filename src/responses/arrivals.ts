@@ -11,11 +11,12 @@ import type {
 } from "./collectionPoints.js";
 import type { UserDto, UserRefDto } from "./users.js";
 
+//TODO can we make the type require collectionpointid only if source_type is point ?
 export interface ArrivalDto {
   id: number;
   weight: number;
   arrival_date: string;
-  arrival_time?: string | null;
+  arrival_time?: string | null;//TODO can be undefined ?
   source_type: ArrivalSourceType;
   source_details?: string | null;
   notes?: string | null;

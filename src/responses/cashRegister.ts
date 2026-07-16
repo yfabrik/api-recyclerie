@@ -12,9 +12,9 @@ export interface CashRegisterDto {
   recyclery_id: RecycleryDto["id"];
   createdAt: string;
   updatedAt: string;
-  store_name?: string | null;
+  store_name?: string | null;//TODO il a reelement le type ?
   total_sessions?: number | string;
-  last_session?: string | null;
+  last_session?: string | null;//TODO last session id or last session date ?
   Recyclery?: RecycleryRefDto | null;
   sessions?: CashSessionRefDto[];
 }
@@ -28,7 +28,7 @@ export type CashRegisterRefDto = Pick<
 export interface CashRegisterSessionRefDto extends CashRegisterRefDto {
   Recyclery?: RecycleryRefDto | null;
 }
-
+//TODO move to cashSession.ts ?
 export type CashSessionRefDto = Pick<
   CashSessionDto,
   | "id"

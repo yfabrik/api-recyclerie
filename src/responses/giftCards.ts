@@ -35,9 +35,9 @@ export interface GiftCardDto {
   note?: string | null;
   recipient_name?: AlphanumericString | null;
   recipient_email?: EmailAddress | null;
-  issued_transaction_id?: SalesTransactionDto["id"] | null;
+  issued_transaction_id?: SalesTransactionDto["id"] | null;//TODO can we ensure only one of the 2 is set with type ?
   issued_refund_transaction_id?: SalesTransactionDto["id"] | null;
-  created_by?: UserDto["id"] | null;
+  created_by?: UserDto["id"] | null;//TODO required ?
   createdAt: string;
   updatedAt: string;
   movements?: GiftCardTransactionDto[];

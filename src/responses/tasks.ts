@@ -26,7 +26,7 @@ export interface  TaskDto {
   schedule_id?: TaskScheduleDto["id"] | null;
   store_id?: RecycleryDto["id"] | null;
   collection_point_id?: CollectionPointDto["id"] | null;
-  day_of_week?: string | null;
+  day_of_week?: string | null;//TODO enum
   createdAt: string;
   updatedAt: string;
   Recyclery?: RecycleryRefDto | null;

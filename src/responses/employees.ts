@@ -17,7 +17,7 @@ export interface EmployeeDto {
   isActive: boolean;
   phone?: FrenchPhoneNumber | null;
   email?: EmailAddress | null;
-  fullName?: string;
+  fullName?: string;//TODO required ? it nom + prenom 
   workTime?: number;
   createdAt: string;
   updatedAt: string;

@@ -22,7 +22,7 @@ export interface RecycleryDto {
   postal_code?: FrenchPostalCode | null;
   is_active: boolean;
   manager_id?: UserDto["id"] | null;
-  cash_registers_count?: number | string;
+  cash_registers_count?: number | string;//TODO where can i find it ? is it really string ?
   createdAt: string;
   updatedAt: string;
   manager?: UserRefDto | null;

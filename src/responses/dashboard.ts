@@ -3,6 +3,8 @@ import type {
 } from "../types/response.js";
 import type { RecycleryDto } from "./recycleries.js";
 
+//TODO REMAKE
+
 export interface DashboardStatsDto {
   totalItems: number;
   availableItems: number;
@@ -36,6 +38,7 @@ export interface DashboardChartsDto {
   labels: string[];
 }
 
+//TODO the 2 should be the same
 export interface DashboardStoreMonthStatsDto {
   transactions: number;
   revenue: number;
@@ -52,6 +55,7 @@ export interface DashboardStorePeriodStatsDto {
   end: string;
 }
 
+
 export interface DashboardStoreStatsBlockDto {
   currentMonth: DashboardStoreMonthStatsDto;
   lastMonth: DashboardStorePeriodStatsDto;
@@ -59,6 +63,7 @@ export interface DashboardStoreStatsBlockDto {
   growth: { revenue: number };
 }
 
+//TODO REMAKE
 export interface DashboardStoreDto {
   // Pick fields from RecycleryDto
   id: RecycleryDto["id"];
@@ -70,11 +75,11 @@ export interface DashboardStoreDto {
 }
 
 export interface DashboardStoreHistoryDto {
-  id: number;
-  name: string;
-  address?: string | null;
-  phone?: string | null;
-  email?: string | null;
+  id: RecycleryDto["id"];
+  name: RecycleryDto["name"];
+  address?: RecycleryDto["address"];
+  phone?: RecycleryDto["phone"];
+  email?: RecycleryDto["email"];
   stats: DashboardStoreStatsBlockDto[];
 }
 
