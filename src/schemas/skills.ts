@@ -7,3 +7,4 @@ export const skillDataSchema = z.object({
 });
 
 export type SkillData = z.infer<typeof skillDataSchema>;
+export type SkillDataInput = z.input<typeof skillDataSchema>;

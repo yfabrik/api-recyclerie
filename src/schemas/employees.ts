@@ -10,9 +10,20 @@ export const employeeDataSchema = z.object({
   phone: phoneSchema().nullish().prefault(null),
 });
 
+export const employeeFilterSchema = z.object({
+  store_id: idSchema().optional(),
+  active: z.coerce.boolean().optional(),
+  include:z.string().optional()
+});
+
 export const employeeSkillsSchema = z.object({
   skills: z.array(idSchema()),
 });
 
 export type EmployeeData = z.infer<typeof employeeDataSchema>;
 export type EmployeeSkillsBody = z.infer<typeof employeeSkillsSchema>;
+export type EmployeeFilterInput = z.input<typeof employeeFilterSchema>;
+export type EmployeeDataInput = z.input<typeof employeeDataSchema>;
+export type EmployeeSkillsInput = z.input<typeof employeeSkillsSchema>;
+
+export type EmployeeFilters = z.infer<typeof employeeFilterSchema>;

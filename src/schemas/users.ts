@@ -47,4 +47,9 @@ export const userAdminUpdatePasswordSchema = z.object({
 
 export type UserListFilter = z.infer<typeof userListFilterSchema>;
 export type UserCreateBody = z.infer<typeof userCreateSchema>;
-export type UserUpdateBody = z.infer<typeof userUpdateSchema>;
+export type UserUpdateBody = z.infer<typeof userUpdateSchema>;  
+export type UserAdminUpdatePasswordBody = z.infer<typeof userAdminUpdatePasswordSchema>;
+export type UserListFilterInput = z.input<typeof userListFilterSchema>;
+export type UserCreateInput = z.input<typeof userCreateSchema>;
+export type UserUpdateInput = z.input<typeof userUpdateSchema>;
+export type UserAdminUpdatePasswordInput = z.input<typeof userAdminUpdatePasswordSchema>;

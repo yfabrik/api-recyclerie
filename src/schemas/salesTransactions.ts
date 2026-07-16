@@ -29,6 +29,8 @@ export const transactionItemSchema = z.object({
   bundleQuantity: z.coerce.number().nullish(),
 });
 
+
+//TODO j'aime pas mais ça permet de valider que  giftcard a un code
 export const paymentLineSchema = z.discriminatedUnion("method", [
   z.object({
     method: z.literal("giftcard"),
@@ -41,7 +43,7 @@ export const paymentLineSchema = z.discriminatedUnion("method", [
       "mode de paiement requis",
     ),
     amount: z.coerce.number("montant requis").positive(),
-    gift_card_code: z.string().trim().min(1).nullish(),
+    // gift_card_code: z.string().trim().min(1).nullish(),
   }),
 ]);
 
@@ -50,7 +52,7 @@ export const saleTransactionBaseSchema = z.object({
   total_amount: z.coerce.number("argent requis"),
   total_amount_before_promotion: z.coerce.number("argent requis"),
   payment_amount: z.coerce.number("argent requis"),
-  payments: z.array(paymentLineSchema).optional(),
+  payments: z.array(paymentLineSchema).optional(),//TODO optional really ?
   customer_postal_code: postalSchema().nullish(),
   items: z.array(transactionItemSchema),
   change_amount: z.coerce.number().optional(),
@@ -110,3 +112,10 @@ export type TransactionItem = z.infer<typeof transactionItemSchema>;
 export type SaleTransactionBase = z.infer<typeof saleTransactionBaseSchema>;
 export type RefundData = z.infer<typeof refundDataSchema>;
 export type TransactionListFilter = z.infer<typeof transactionListFilterSchema>;
+export type TransactionStatsFilter = z.infer<typeof transactionStatsFilterSchema>;
+
+export type TransactionItemInput = z.input<typeof transactionItemSchema>;
+export type PaymentLineInput = z.input<typeof paymentLineSchema>;
+export type SaleTransactionBaseInput = z.input<typeof saleTransactionBaseSchema>;
+export type RefundDataInput = z.input<typeof refundDataSchema>;
+export type TransactionStatsFilterInput = z.input<typeof transactionStatsFilterSchema>;

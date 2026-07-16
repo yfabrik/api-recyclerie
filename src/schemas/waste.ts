@@ -49,3 +49,7 @@ export type WasteBody = z.infer<typeof wasteBodySchema>;
 export type ListWasteQuery = z.infer<typeof listWasteQuerySchema>;
 export type WasteDateRangeQuery = z.infer<typeof wasteDateRangeQuerySchema>;
 export type WasteIdParams = z.infer<typeof wasteIdParamsSchema>;
+export type WasteBodyInput = z.input<typeof wasteBodySchema>;
+export type ListWasteQueryInput = z.input<typeof listWasteQuerySchema>;
+export type WasteDateRangeQueryInput = z.input<typeof wasteDateRangeQuerySchema>;
+export type WasteIdParamsInput = z.input<typeof wasteIdParamsSchema>;

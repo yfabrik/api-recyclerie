@@ -53,3 +53,7 @@ export const assignEmployeeToTaskBodySchema = z.object({
 
 export type TaskData = z.infer<typeof taskDataSchema>;
 export type TaskListFilter = z.infer<typeof taskListFilterSchema>;
+
+export type TaskDataInput = z.input<typeof taskDataSchema>;
+export type TaskListFilterInput = z.input<typeof taskListFilterSchema>;
+export type AssignEmployeeToTaskBodyInput = z.input<typeof assignEmployeeToTaskBodySchema>;

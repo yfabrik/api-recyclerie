@@ -53,3 +53,6 @@ export const createStoreHoursDataSchema = (
     is_24h: z.coerce.boolean().default(false),
     notes: z.string().nullish(),
   });
+
+export type CreateCollectionPointPresenceDataInput = z.input<ReturnType<typeof createCollectionPointPresenceDataSchema>>;
+export type CreateStoreHoursDataInput = z.input<ReturnType<typeof createStoreHoursDataSchema>>;

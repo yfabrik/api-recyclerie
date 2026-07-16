@@ -45,3 +45,6 @@ export const categoryPatchSchema = z.object({
 export type CategoryData = z.infer<typeof categoryDataSchema>;
 export type CategoryListFilter = z.infer<typeof categoryListFilterSchema>;
 export type CategoryPatch = z.infer<typeof categoryPatchSchema>;
+
+export type CategoryDataInput = z.input<typeof categoryDataSchema>;
+export type CategoryPatchInput = z.input<typeof categoryPatchSchema>;

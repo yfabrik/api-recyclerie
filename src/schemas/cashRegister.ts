@@ -21,3 +21,6 @@ export const cashRegisterUpdateSchema = z.object({
 export type CashRegisterFilter = z.infer<typeof cashRegisterFilterSchema>;
 export type CashRegisterCreate = z.infer<typeof cashRegisterCreateSchema>;
 export type CashRegisterUpdate = z.infer<typeof cashRegisterUpdateSchema>;
+export type CashRegisterFilterInput = z.input<typeof cashRegisterFilterSchema>;
+export type CashRegisterCreateInput = z.input<typeof cashRegisterCreateSchema>;
+export type CashRegisterUpdateInput = z.input<typeof cashRegisterUpdateSchema>;

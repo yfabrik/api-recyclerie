@@ -19,3 +19,5 @@ export const employeeWorkdaysBulkSchema = z.object({
 
 export type EmployeeWorkdayItem = z.infer<typeof employeeWorkdayItemSchema>;
 export type EmployeeWorkdaysBulkBody = z.infer<typeof employeeWorkdaysBulkSchema>;
+export type EmployeeWorkdayItemInput = z.input<typeof employeeWorkdayItemSchema>;
+export type EmployeeWorkdaysBulkInput = z.input<typeof employeeWorkdaysBulkSchema>;

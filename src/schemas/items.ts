@@ -35,6 +35,8 @@ export const labeledItemFilterSchema = z.object({
   search: z.string().optional(),
   recyclery_id: idSchema().optional(),
   barcode: idSchema().optional(),
+  date_from: z.coerce.date().optional(),
+  date_to: z.coerce.date().optional(),
   include: labeledItemIncludeSchema.optional().default([]),
 });
 
@@ -45,3 +47,6 @@ export const labeledItemStatsFilterSchema = labeledItemFilterSchema.extend({
 export type LabeledItemData = z.infer<typeof labeledItemDataSchema>;
 export type LabeledItemFilter = z.infer<typeof labeledItemFilterSchema>;
 export type LabeledItemIncludeList = z.infer<typeof labeledItemIncludeSchema>;
+export type LabeledItemDataInput = z.input<typeof labeledItemDataSchema>;
+export type LabeledItemFilterInput = z.input<typeof labeledItemFilterSchema>;
+export type LabeledItemStatsFilterInput = z.input<typeof labeledItemStatsFilterSchema>;

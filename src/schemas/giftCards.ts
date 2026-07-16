@@ -30,3 +30,7 @@ export const giftCardCodeParamSchema = z.string().trim().min(1);
 
 export type GiftCardIssueBody = z.infer<typeof giftCardIssueSchema>;
 export type GiftCardMovementBody = z.infer<typeof giftCardMovementSchema>;
+export type GiftCardListFilterInput = z.input<typeof giftCardListFilterSchema>;
+export type GiftCardCodeParamInput = z.input<typeof giftCardCodeParamSchema>;
+export type GiftCardIssueInput = z.input<typeof giftCardIssueSchema>;
+export type GiftCardMovementInput = z.input<typeof giftCardMovementSchema>;

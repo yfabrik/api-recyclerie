@@ -18,3 +18,6 @@ export const removeEmployeeStoreParamsSchema = z.object({
 });
 
 export type AssignEmployeeStoreBody = z.infer<typeof assignEmployeeStoreSchema>;
+export type AssignEmployeeStoreInput = z.input<typeof assignEmployeeStoreSchema>;
+export type RemoveEmployeeStoreParamsInput = z.input<typeof removeEmployeeStoreParamsSchema>;
+export type EmployeeStoreParamsInput = z.input<typeof employeeStoreParamsSchema>;

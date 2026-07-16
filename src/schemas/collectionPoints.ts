@@ -30,3 +30,5 @@ export const collectionPointFilterSchema = z.object({
 
 export type CollectionPointData = z.infer<typeof collectionPointDataSchema>;
 export type CollectionPointFilter = z.infer<typeof collectionPointFilterSchema>;
+export type CollectionPointDataInput = z.input<typeof collectionPointDataSchema>;
+export type CollectionPointFilterInput = z.input<typeof collectionPointFilterSchema>;

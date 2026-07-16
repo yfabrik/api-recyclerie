@@ -51,3 +51,6 @@ export const arrivalDateFilterSchema = z.object({
 
 export type ArrivalData = z.infer<typeof arrivalDataSchema>;
 export type ArrivalFilter = z.infer<typeof arrivalFilterSchema>;
+
+export type ArrivalFilterInput = z.input<typeof arrivalFilterSchema>;
+export type arrivalDataInput = z.input<typeof arrivalDataSchema>;

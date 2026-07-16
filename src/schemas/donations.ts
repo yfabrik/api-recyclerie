@@ -22,3 +22,5 @@ export const donationFilterSchema = z.object({
 
 export type DonationData = z.infer<typeof donationDataSchema>;
 export type DonationFilter = z.infer<typeof donationFilterSchema>;
+export type DonationDataInput = z.input<typeof donationDataSchema>;
+export type DonationFilterInput = z.input<typeof donationFilterSchema>;

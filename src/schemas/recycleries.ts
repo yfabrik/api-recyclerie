@@ -29,3 +29,5 @@ export const recycleryFilterSchema = z.object({
 
 export type RecycleryData = z.infer<typeof recycleryDataSchema>;
 export type RecycleryFilter = z.infer<typeof recycleryFilterSchema>;
+export type RecycleryDataInput = z.input<typeof recycleryDataSchema>;
+export type RecycleryFilterInput = z.input<typeof recycleryFilterSchema>;

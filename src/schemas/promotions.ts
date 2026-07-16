@@ -18,3 +18,4 @@ export const promotionDataSchema = z.object({
 });
 
 export type PromotionData = z.infer<typeof promotionDataSchema>;
+export type PromotionDataInput = z.input<typeof promotionDataSchema>;

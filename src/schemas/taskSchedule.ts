@@ -39,3 +39,9 @@ export const assignEmployeeToScheduleBodySchema = z.object({
 
 export type TaskScheduleData = z.infer<typeof taskScheduleDataSchema>;
 export type TaskScheduleFilter = z.infer<typeof taskScheduleFilterSchema>;
+export type TaskScheduleDateFilter = z.infer<typeof taskScheduleDateFilterSchema>;
+export type AssignEmployeeToScheduleBody = z.infer<typeof assignEmployeeToScheduleBodySchema>;
+export type TaskScheduleDataInput = z.input<typeof taskScheduleDataSchema>;
+export type TaskScheduleFilterInput = z.input<typeof taskScheduleFilterSchema>;
+export type TaskScheduleDateFilterInput = z.input<typeof taskScheduleDateFilterSchema>;
+export type AssignEmployeeToScheduleBodyInput = z.input<typeof assignEmployeeToScheduleBodySchema>;

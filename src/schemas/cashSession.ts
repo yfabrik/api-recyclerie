@@ -29,3 +29,7 @@ export const cashSessionStatsFilterSchema = z.object({
 
 export type OpenCashSessionBody = z.infer<typeof openCashSessionSchema>;
 export type CloseCashSessionBody = z.infer<typeof closeCashSessionSchema>;
+export type CashSessionFilterInput = z.input<typeof cashSessionFilterSchema>;
+export type OpenCashSessionInput = z.input<typeof openCashSessionSchema>;
+export type CloseCashSessionInput = z.input<typeof closeCashSessionSchema>;
+export type CashSessionStatsFilterInput = z.input<typeof cashSessionStatsFilterSchema>;

@@ -26,5 +26,16 @@ export const ecoOrganismFilterSchema = z.object({
     .pipe(z.array(z.enum(ALLOWED_INCLUDES))),
 });
 
+export const ecoOrganismQuartersFilterSchema = z.object({
+  point: idSchema().optional(),
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
+});
+
+export type EcoOrganismQuartersFilter = z.infer<typeof ecoOrganismQuartersFilterSchema>;
+export type EcoOrganismQuartersFilterInput = z.input<typeof ecoOrganismQuartersFilterSchema>;
+
 export type EcoOrganismData = z.infer<typeof ecoOrganismDataSchema>;
 export type EcoOrganismFilter = z.infer<typeof ecoOrganismFilterSchema>;
+export type EcoOrganismDataInput = z.input<typeof ecoOrganismDataSchema>;
+export type EcoOrganismFilterInput = z.input<typeof ecoOrganismFilterSchema>;
