@@ -4,7 +4,6 @@ import {
   ALPHANUMERIC_REGEX,
   FRENCH_PHONE_REGEX,
   FRENCH_POSTAL_CODE_REGEX,
-  ITEM_BARCODE_REGEX,
 } from "./patterns.js";
 
 export const nullishToNull = (schema: ZodTypeAny) =>
@@ -36,15 +35,6 @@ export const urlSchema = (message?: string) =>
 
 export const idSchema = (message?: string) =>
   z.coerce.number({ message }).positive({ message });
-
-/** 12-digit zero-padded labeled-item barcode (virtual from id). */
-export const barcodeSchema = (message?: string) =>
-  z
-    .string({ message })
-    .regex(ITEM_BARCODE_REGEX, {
-      message: message ?? "code-barres 12 chiffres requis",
-    })
-    .brand("ItemBarcode");
 
 export const enumSchema = <const T extends readonly [string, ...string[]]>(
   values: T,
@@ -79,7 +69,6 @@ export type FrenchPostalCode = z.infer<ReturnType<typeof postalSchema>>;
 export type AlphanumericString = z.infer<ReturnType<typeof alphanumericSchema>>;
 export type EmailAddress = z.infer<ReturnType<typeof emailSchema>>;
 export type Url = z.infer<ReturnType<typeof urlSchema>>;
-export type ItemBarcode = z.infer<ReturnType<typeof barcodeSchema>>;
 export type IsoDateTime = z.infer<ReturnType<typeof isoDateTimeSchema>>;
 export type IsoDate = z.infer<ReturnType<typeof isoDateSchema>>;
 export type IsoTime = z.infer<ReturnType<typeof isoTimeSchema>>;

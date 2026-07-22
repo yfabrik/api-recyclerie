@@ -1,12 +1,7 @@
 import z from "zod";
 
 import { CONDITION_STATES } from "../enums/index.js";
-import {
-  barcodeSchema,
-  enumSchema,
-  idSchema,
-  isoDateSchema,
-} from "../primitives/zod.js";
+import { enumSchema, idSchema, isoDateSchema } from "../primitives/zod.js";
 
 const LABELED_ITEM_INCLUDES = ["category.subcategories"] as const;
 
@@ -39,7 +34,7 @@ export const labeledItemFilterSchema = z.object({
   category_id: idSchema().optional(),
   search: z.string().optional(),
   recyclery_id: idSchema().optional(),
-  barcode: barcodeSchema().optional(),
+  barcode: idSchema().optional(),
   date_from: isoDateSchema().optional(),
   date_to: isoDateSchema().optional(),
   include: labeledItemIncludeSchema.optional().default([]),

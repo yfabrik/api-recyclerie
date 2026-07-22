@@ -1,5 +1,5 @@
 import type { ConditionState, LabeledItemStatus } from "../enums/index.js";
-import type { IsoDateTime, ItemBarcode } from "../primitives/zod.js";
+import type { IsoDateTime } from "../primitives/zod.js";
 import type {
   ApiDataResponse,
   ApiMessageResponse,
@@ -31,8 +31,8 @@ export interface LabeledItemBaseDto {
 }
 
 export interface LabeledItemDto extends LabeledItemBaseDto {
-  /** Virtual: zero-padded id used as barcode (always 12 digits). */
-  barcode: ItemBarcode;
+  /** Virtual: zero-padded id used as barcode. */
+  barcode: string;
   category?: LabeledItemCategoryDto | undefined;
   subcategory?: CategoryRefDto | null | undefined;
   recyclery?: RecycleryRefDto | null | undefined;

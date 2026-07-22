@@ -8,6 +8,3 @@ export const FRENCH_POSTAL_CODE_REGEX =
 
 /** Matches donation.donor_name + collectionPoint.contact_person isAlphanumeric */
 export const ALPHANUMERIC_REGEX = /^[a-zA-Z0-9]+$/;
-
-/** Labeled-item virtual barcode: zero-padded numeric id, always 12 digits. */
-export const ITEM_BARCODE_REGEX = /^\d{12}$/;
