@@ -1,36 +1,41 @@
-import type { TaskCategory, TaskPriority } from "../enums/index.js";
+import type { TaskCategory, TaskPriority, Weekday } from "../enums/index.js";
+import type { IsoDateTime } from "../primitives/zod.js";
 import type {
   ApiDataResponse,
   ApiMessageResponse,
 } from "../types/response.js";
-import type { CollectionPointDto } from "./collectionPoints.js";
-import type { RecycleryDto, RecycleryRefDto } from "./recycleries.js";
-import type { TaskScheduleDto } from "./taskSchedule.js";
+import type { CollectionPointBaseDto } from "./collectionPoints.js";
+import type { RecycleryBaseDto, RecycleryRefDto } from "./recycleries.js";
+import type { TaskScheduleBaseDto } from "./taskSchedule.js";
 import type { EmployeeDto } from "./employees.js";
 
-export interface  TaskDto {
+export interface TaskBaseDto {
   id: number;
   name: string;
-  description?: string | null;
+  description: string | null;
   category: TaskCategory;
-  priority?: TaskPriority | null;
-  required_skills?: string | null;
-  location?: string | null;
-  equipment_needed?: string | null;
-  hourly_rate?: number | string | null;
-  scheduled_date: string;
-  start_time: string;
-  end_time: string;
-  notes?: string | null;
+  priority: TaskPriority | null;
+  required_skills: string | null;
+  location: string | null;
+  equipment_needed: string | null;
+  hourly_rate: number | null;
+  scheduled_date: IsoDateTime;
+  start_time: IsoDateTime;
+  end_time: IsoDateTime;
+  notes: string | null;
   status: string | null;
-  schedule_id?: TaskScheduleDto["id"] | null;
-  store_id?: RecycleryDto["id"] | null;
-  collection_point_id?: CollectionPointDto["id"] | null;
-  day_of_week?: string | null;//TODO enum
-  createdAt: string;
-  updatedAt: string;
-  Recyclery?: RecycleryRefDto | null;
-  Employees?: EmployeeDto[];
+  schedule_id: TaskScheduleBaseDto["id"] | null;
+  store_id: RecycleryBaseDto["id"] | null;
+  collection_point_id: CollectionPointBaseDto["id"] | null;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface TaskDto extends TaskBaseDto {
+  /** Virtual: derived from `scheduled_date`. */
+  day_of_week: Weekday | null;
+  Recyclery?: RecycleryRefDto | null | undefined;
+  Employees?: EmployeeDto[] | undefined;
 }
 
 export type ListTasksResponse = ApiDataResponse<TaskDto[]>;

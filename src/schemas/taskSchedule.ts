@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 import { RECURRENCE_PATTERNS, TASK_CATEGORIES } from "../enums/index.js";
-import { enumSchema, idSchema } from "../primitives/zod.js";
+import { enumSchema, idSchema, isoDateSchema } from "../primitives/zod.js";
 
 export const taskScheduleDataSchema = z.object({
   scheduled_date: z.coerce.date("date requis"),
@@ -20,8 +20,8 @@ export const taskScheduleDataSchema = z.object({
 });
 
 export const taskScheduleFilterSchema = z.object({
-  start_date: z.coerce.date().optional(),
-  end_date: z.coerce.date().optional(),
+  start_date: isoDateSchema().optional(),
+  end_date: isoDateSchema().optional(),
   employee_id: idSchema().optional(),
   status: z.string().optional(),
   store_id: idSchema().optional(),
@@ -29,8 +29,8 @@ export const taskScheduleFilterSchema = z.object({
 });
 
 export const taskScheduleDateFilterSchema = z.object({
-  start_date: z.coerce.date().optional(),
-  end_date: z.coerce.date().optional(),
+  start_date: isoDateSchema().optional(),
+  end_date: isoDateSchema().optional(),
 });
 
 export const assignEmployeeToScheduleBodySchema = z.object({

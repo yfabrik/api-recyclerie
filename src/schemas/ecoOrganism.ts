@@ -1,6 +1,5 @@
+import { idSchema, isoDateSchema, phoneSchema } from "../primitives/zod.js";
 import z from "zod";
-
-import { idSchema, phoneSchema } from "../primitives/zod.js";
 
 export const ecoOrganismDataSchema = z.object({
   name: z.string().trim().nonempty("Le nom est requis"),
@@ -28,8 +27,8 @@ export const ecoOrganismFilterSchema = z.object({
 
 export const ecoOrganismQuartersFilterSchema = z.object({
   point: idSchema().optional(),
-  startDate: z.coerce.date().optional(),
-  endDate: z.coerce.date().optional(),
+  startDate: isoDateSchema().optional(),
+  endDate: isoDateSchema().optional(),
 });
 
 export type EcoOrganismQuartersFilter = z.infer<typeof ecoOrganismQuartersFilterSchema>;

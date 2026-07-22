@@ -2,6 +2,7 @@ import type { UserRole } from "../enums/index.js";
 import type {
   EmailAddress,
   FrenchPhoneNumber,
+  IsoDateTime,
 } from "../primitives/zod.js";
 import type {
   ApiDataResponse,
@@ -9,27 +10,30 @@ import type {
 } from "../types/response.js";
 import type { RecycleryRefDto } from "./recycleries.js";
 
-export interface UserDto {
+export interface UserBaseDto {
   id: number;
   username: string;
   email: EmailAddress;
   role: UserRole;
-  phone?: FrenchPhoneNumber | null;
+  phone: FrenchPhoneNumber | null;
   isActive: boolean;
-  last_login?: string | null;
-  createdAt: string;
-  updatedAt: string;
-  managedStores?: RecycleryRefDto[];
+  last_login: IsoDateTime | null;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface UserDto extends UserBaseDto {
+  managedStores?: RecycleryRefDto[] | undefined;
 }
 
 export type UserRefDto = Pick<
-  UserDto,
+  UserBaseDto,
   "id" | "username" | "email" | "role"
 >;
 
 export interface UserStatsByRoleDto {
   role: UserRole | string;
-  count: number | string;
+  count: number;
 }
 
 export interface UserStatsDto {

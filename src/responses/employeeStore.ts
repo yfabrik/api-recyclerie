@@ -5,13 +5,12 @@ import type {
 import type { RecycleryRefDto } from "./recycleries.js";
 import type { EmployeeDto } from "./employees.js";
 
-//TODO ??
 export interface EmployeeStoreAssignmentDto extends RecycleryRefDto {
-  is_primary?: boolean;
+  is_primary?: boolean | undefined;
 }
 
 export interface EmployeeWithStoreAssignmentsDto extends EmployeeDto {
-  stores?: EmployeeStoreAssignmentDto[];
+  stores?: EmployeeStoreAssignmentDto[] | undefined;
 }
 
 export type ListEmployeeStoreResponse = ApiDataResponse<EmployeeWithStoreAssignmentsDto[]>;

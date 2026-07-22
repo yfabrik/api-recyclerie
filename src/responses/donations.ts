@@ -3,17 +3,18 @@ import type {
   AlphanumericString,
   EmailAddress,
   FrenchPhoneNumber,
+  IsoDateTime,
 } from "../primitives/zod.js";
 import type {
   ApiDataResponse,
   ApiMessageResponse,
 } from "../types/response.js";
-import type { RecycleryDto } from "./recycleries.js";
-import type { UserDto, UserRefDto } from "./users.js";
+import type { RecycleryBaseDto } from "./recycleries.js";
+import type { UserBaseDto, UserRefDto } from "./users.js";
 
 export type { UserRefDto } from "./users.js";
 
-export interface DonationDto {
+export interface DonationBaseDto {
   id: number;
   donor_name: AlphanumericString | null;
   donor_phone: FrenchPhoneNumber | null;
@@ -22,20 +23,23 @@ export interface DonationDto {
   estimated_value: number | null;
   status: DonationStatus;
   weight: number;
-  recyclery_id?: RecycleryDto["id"] | null;//TODO required ?
-  received_by?: UserDto["id"] | null;
-  received_at?: string;
-  createdAt: string;
-  updatedAt: string;
-  User?: UserRefDto | null;
+  recyclery_id: RecycleryBaseDto["id"] | null;
+  received_by: UserBaseDto["id"];
+  received_at: IsoDateTime;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface DonationDto extends DonationBaseDto {
+  User?: UserRefDto | null | undefined;
 }
 
 export interface DonationStatsDto {
-  total_donations?: number | string;
-  pending_donations?: number | string | null;
-  accepted_donations?: number | string | null;
-  rejected_donations?: number | string | null;
-  total_estimated_value?: number | string | null;
+  total_donations?: number | undefined;
+  pending_donations?: number | null | undefined;
+  accepted_donations?: number | null | undefined;
+  rejected_donations?: number | null | undefined;
+  total_estimated_value?: number | null | undefined;
 }
 
 export type ListDonationsResponse = ApiDataResponse<DonationDto[]>;

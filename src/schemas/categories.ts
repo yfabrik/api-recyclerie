@@ -47,4 +47,5 @@ export type CategoryListFilter = z.infer<typeof categoryListFilterSchema>;
 export type CategoryPatch = z.infer<typeof categoryPatchSchema>;
 
 export type CategoryDataInput = z.input<typeof categoryDataSchema>;
+export type CategoryListFilterInput = z.input<typeof categoryListFilterSchema>;
 export type CategoryPatchInput = z.input<typeof categoryPatchSchema>;

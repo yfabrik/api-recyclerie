@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 import { RECURRENCE_PATTERNS, TASK_CATEGORIES } from "../enums/index.js";
-import { enumSchema, idSchema } from "../primitives/zod.js";
+import { enumSchema, idSchema, isoDateSchema } from "../primitives/zod.js";
 
 export const taskDataSchema = z.object({
   name: z.string("Nom requis"),
@@ -42,8 +42,8 @@ export const taskListFilterSchema = z.object({
   category: enumSchema(TASK_CATEGORIES).nullable().optional(),
   priority: z.string().optional(),
   search: z.string().optional(),
-  date_from: z.coerce.date().optional(),
-  date_to: z.coerce.date().optional(),
+  date_from: isoDateSchema().optional(),
+  date_to: isoDateSchema().optional(),
   store_id: idSchema().nullish(),
 });
 

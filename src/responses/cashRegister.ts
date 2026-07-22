@@ -1,48 +1,41 @@
+import type { IsoDateTime } from "../primitives/zod.js";
 import type {
   ApiDataResponse,
   ApiMessageResponse,
 } from "../types/response.js";
-import type { CashSessionDto } from "./cashSession.js";
-import type { RecycleryDto, RecycleryRefDto } from "./recycleries.js";
+import type { CashSessionRefDto } from "./cashSession.js";
+import type { RecycleryBaseDto, RecycleryRefDto } from "./recycleries.js";
 
-export interface CashRegisterDto {
+export interface CashRegisterBaseDto {
   id: number;
   name: string;
   is_active: boolean;
-  recyclery_id: RecycleryDto["id"];
-  createdAt: string;
-  updatedAt: string;
-  store_name?: string | null;//TODO il a reelement le type ?
-  total_sessions?: number | string;
-  last_session?: string | null;//TODO last session id or last session date ?
-  Recyclery?: RecycleryRefDto | null;
-  sessions?: CashSessionRefDto[];
+  recyclery_id: RecycleryBaseDto["id"];
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface CashRegisterDto extends CashRegisterBaseDto {
+  /** From Recyclery join / association (controller query). */
+  store_name: string | null;
+  /** Aggregate `COUNT(sessions)` (controller query). */
+  total_sessions?: number | undefined;
+  /** Aggregate `MAX(sessions.createdAt)` (controller query). */
+  last_session: IsoDateTime | null;
+  Recyclery?: RecycleryRefDto | null | undefined;
+  sessions?: CashSessionRefDto[] | undefined;
 }
 
 export type CashRegisterRefDto = Pick<
-  CashRegisterDto,
+  CashRegisterBaseDto,
   "id" | "name" | "is_active" | "recyclery_id"
 >;
 
 /** Cash register ref with store, used when nested under a cash session. */
 export interface CashRegisterSessionRefDto extends CashRegisterRefDto {
-  Recyclery?: RecycleryRefDto | null;
+  Recyclery?: RecycleryRefDto | null | undefined;
 }
-//TODO move to cashSession.ts ?
-export type CashSessionRefDto = Pick<
-  CashSessionDto,
-  | "id"
-  | "opening_amount"
-  | "closing_amount"
-  | "expected_amount"
-  | "status"
-  | "notes"
-  | "closed_at"
-  | "cash_register_id"
-  | "user_id"
-  | "createdAt"
-  | "updatedAt"
->;
+
 
 export type ListCashRegistersResponse = ApiDataResponse<CashRegisterDto[]>;
 export type DetailCashRegisterResponse = ApiDataResponse<CashRegisterDto>;

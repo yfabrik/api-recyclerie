@@ -118,6 +118,7 @@ export const WASTE_DISPOSAL_TYPES = [
 ] as const;
 export type WasteDisposalType = (typeof WASTE_DISPOSAL_TYPES)[number];
 
+/** @deprecated Use Weekday 0–6 (JS getDay). Kept for reference during migration. */
 export const EMPLOYEE_DAYS_OF_WEEK = [
   "monday",
   "tuesday",
@@ -127,11 +128,13 @@ export const EMPLOYEE_DAYS_OF_WEEK = [
   "saturday",
   "sunday",
 ] as const;
+/** @deprecated Use Weekday 0–6. */
 export type EmployeeDayOfWeek = (typeof EMPLOYEE_DAYS_OF_WEEK)[number];
 
 export const TIME_SLOTS = ["morning", "afternoon"] as const;
 export type TimeSlot = (typeof TIME_SLOTS)[number];
 
+/** @deprecated Use Weekday 0–6 (JS getDay). Kept for reference during migration. */
 export const FRENCH_WEEKDAYS = [
   "Lundi",
   "Mardi",
@@ -141,7 +144,12 @@ export const FRENCH_WEEKDAYS = [
   "Samedi",
   "Dimanche",
 ] as const;
+/** @deprecated Use Weekday 0–6. */
 export type FrenchWeekday = (typeof FRENCH_WEEKDAYS)[number];
+
+/** JS weekday: 0=Sunday … 6=Saturday (Date.getDay / dayjs.day). */
+export const WEEKDAYS = [0, 1, 2, 3, 4, 5, 6] as const;
+export type Weekday = (typeof WEEKDAYS)[number];
 
 export const PERMISSION_MODULES = [
   "dashboard",

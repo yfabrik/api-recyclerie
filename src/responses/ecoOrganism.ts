@@ -5,6 +5,7 @@ import type {
 import type {
   EmailAddress,
   FrenchPhoneNumber,
+  IsoDateTime,
   Url,
 } from "../primitives/zod.js";
 import type {
@@ -14,24 +15,27 @@ import type {
 import type { CategoryRefDto } from "./categories.js";
 import type { WasteDisposalDto } from "./waste.js";
 
-export interface EcoOrganismDto {
+export interface EcoOrganismBaseDto {
   id: number;
   name: string;
-  description?: string | null;
-  contact_email?: EmailAddress | null;
-  contact_phone?: FrenchPhoneNumber | null;
-  address?: string | null;
-  website?: Url | null;
+  description: string | null;
+  contact_email: EmailAddress | null;
+  contact_phone: FrenchPhoneNumber | null;
+  address: string | null;
+  website: Url | null;
   is_active: boolean;
-  createdAt: string;
-  updatedAt: string;
-  inCategories?: CategoryRefDto[];
-  sellCategories?: CategoryRefDto[];
-  WasteDisposals?: WasteDisposalDto[];
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface EcoOrganismDto extends EcoOrganismBaseDto {
+  inCategories?: CategoryRefDto[] | undefined;
+  sellCategories?: CategoryRefDto[] | undefined;
+  WasteDisposals?: WasteDisposalDto[] | undefined;
 }
 
 export type EcoOrganismRefDto = Pick<
-  EcoOrganismDto,
+  EcoOrganismBaseDto,
   | "id"
   | "name"
   | "description"
@@ -40,11 +44,10 @@ export type EcoOrganismRefDto = Pick<
   | "is_active"
 >;
 
-//TODO should all be number ?
 export interface EcoOrganismStatsDto {
-  total_eco_organisms?: number | string;
-  active_eco_organisms?: number | string | null;
-  inactive_eco_organisms?: number | string | null;
+  total_eco_organisms?: number | undefined;
+  active_eco_organisms?: number | null | undefined;
+  inactive_eco_organisms?: number | null | undefined;
 }
 
 export type EcoOrgQuarterLabel = `${number}-T${1 | 2 | 3 | 4}`;
@@ -61,7 +64,7 @@ export interface EcoOrgQuarterCategoryBreakdownDto {
     subcategories: EcoOrgWeightedCategoryDto[];
   })[];
   /** Month range label, e.g. "01-2026--03-2026" */
-  labelMMYYYY?: EcoOrgQuarterMonthRangeLabel;//TODO not used anymore
+  // labelMMYYYY?: EcoOrgQuarterMonthRangeLabel | undefined;//TODO not used anymore
 }
 
 export type EcoOrgQuarterInBySourceTypeDto = Record<
@@ -98,7 +101,7 @@ export interface EcoOrgQuarterPeriodDto {
 export interface EcoOrgQuarterStatsDto {
   id: number;
   name: string;
-  description?: string | null;
+  description?: string | null | undefined;
   is_active: boolean;
   quarters: EcoOrgQuarterPeriodDto[];
 }

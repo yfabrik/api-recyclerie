@@ -4,7 +4,12 @@ import {
   ARRIVAL_SOURCE_TYPES,
   ARRIVAL_STATUSES,
 } from "../enums/index.js";
-import { enumSchema, idSchema } from "../primitives/zod.js";
+import {
+  enumSchema,
+  idSchema,
+  isoDateSchema,
+  isoTimeSchema,
+} from "../primitives/zod.js";
 
 export const arrivalDataSchema = z
   .object({
@@ -12,12 +17,7 @@ export const arrivalDataSchema = z
     subcategory_id: idSchema().nullish().prefault(null),
     weight: z.coerce.number().positive("poids requis"),
     arrival_date: z.coerce.date("date d'arrivage requis"),
-    arrival_time: z.coerce.date(" date d'arrivage requis").transform((val) =>
-      val.toLocaleTimeString(undefined, {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    ),
+    arrival_time: isoTimeSchema("heure d'arrivage requise"),
     source_type: enumSchema(ARRIVAL_SOURCE_TYPES, "type de source requis"),
     source_details: z.string().nullish().prefault(null),
     collection_point_id: idSchema().nullish().prefault(null),
@@ -39,14 +39,14 @@ export const arrivalFilterSchema = z.object({
   category_id: idSchema().optional(),
   source_type: enumSchema(ARRIVAL_SOURCE_TYPES).optional(),
   status: enumSchema(ARRIVAL_STATUSES).optional(),
-  date_from: z.coerce.date().optional(),
-  date_to: z.coerce.date().optional(),
+  date_from: isoDateSchema().optional(),
+  date_to: isoDateSchema().optional(),
   collection_point_id: idSchema().optional(),
 });
 
 export const arrivalDateFilterSchema = z.object({
-  date_from: z.coerce.date().optional(),
-  date_to: z.coerce.date().optional(),
+  date_from: isoDateSchema().optional(),
+  date_to: isoDateSchema().optional(),
 });
 
 export type ArrivalData = z.infer<typeof arrivalDataSchema>;

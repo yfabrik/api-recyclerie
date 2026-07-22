@@ -6,7 +6,7 @@ import {
   SALES_PAYMENT_METHODS,
   TRANSACTION_TYPES,
 } from "../enums/index.js";
-import { enumSchema, idSchema, postalSchema } from "../primitives/zod.js";
+import { enumSchema, idSchema, isoDateSchema, postalSchema } from "../primitives/zod.js";
 
 const NON_GIFTCARD_PAYMENT_METHODS = PAYMENT_METHODS.filter(
   (method): method is Exclude<(typeof PAYMENT_METHODS)[number], "giftcard"> =>
@@ -75,8 +75,8 @@ export const transactionListFilterSchema = z.object({
   ),
   period: z.string().optional(),
   type: enumSchema(TRANSACTION_TYPES, "type de transaction inconnu").optional(),
-  date_from: z.coerce.date().optional(),
-  date_to: z.coerce.date().optional(),
+  date_from: isoDateSchema().optional(),
+  date_to: isoDateSchema().optional(),
   session: idSchema().optional(),
   payment_method: enumSchema(
     SALES_PAYMENT_METHODS,
@@ -95,7 +95,7 @@ export const refundItemSchema = transactionItemSchema;
 export const refundDataSchema = z.object({
   cash_session_id: idSchema(),
   total_amount: z.coerce.number("argent requis"),
-  payment_method: enumSchema(PAYMENT_METHODS).default("cash"),
+  payment_method: enumSchema(PAYMENT_METHODS).default("cash"),//TODO firce front to yse refund method ?
   refund_method: enumSchema(PAYMENT_METHODS).default("cash"),
   gift_card_code: z.string().trim().min(1).nullish(),
   refund_reason: z.string("refund raison requis"),
@@ -104,8 +104,8 @@ export const refundDataSchema = z.object({
 
 export const transactionStatsFilterSchema = z.object({
   store_id: z.union([idSchema(), z.literal("")]).nullish(),
-  date_from: z.coerce.date().optional(),
-  date_to: z.coerce.date().optional(),
+  date_from: isoDateSchema().optional(),
+  date_to: isoDateSchema().optional(),
 });
 
 export type TransactionItem = z.infer<typeof transactionItemSchema>;
@@ -118,4 +118,5 @@ export type TransactionItemInput = z.input<typeof transactionItemSchema>;
 export type PaymentLineInput = z.input<typeof paymentLineSchema>;
 export type SaleTransactionBaseInput = z.input<typeof saleTransactionBaseSchema>;
 export type RefundDataInput = z.input<typeof refundDataSchema>;
+export type TransactionListFilterInput = z.input<typeof transactionListFilterSchema>;
 export type TransactionStatsFilterInput = z.input<typeof transactionStatsFilterSchema>;

@@ -1,5 +1,6 @@
 export * from "./enums/index.js";
 export * from "./primitives/zod.js";
+export * from "./domain/date.js";
 export * from "./responses/arrivals.js";
 export * from "./responses/auth.js";
 export * from "./responses/cashRegister.js";

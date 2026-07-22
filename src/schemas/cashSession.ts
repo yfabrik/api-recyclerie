@@ -1,7 +1,6 @@
-import * as z from "zod";
-
 import { CASH_SESSION_STATUSES } from "../enums/index.js";
-import { enumSchema, idSchema } from "../primitives/zod.js";
+import { enumSchema, idSchema, isoDateSchema } from "../primitives/zod.js";
+import * as z from "zod";
 
 export const cashSessionFilterSchema = z.object({
   store_id: z.coerce.number().positive().optional(),
@@ -22,8 +21,8 @@ export const closeCashSessionSchema = z.object({
 });
 
 export const cashSessionStatsFilterSchema = z.object({
-  date_from: z.coerce.date().nullish(),
-  date_to: z.coerce.date().nullish(),
+  date_from: isoDateSchema().nullish(),
+  date_to: isoDateSchema().nullish(),
   store_id: idSchema().nullish(),
 });
 

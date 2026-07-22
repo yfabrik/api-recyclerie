@@ -1,45 +1,50 @@
 import type { ConditionState, LabeledItemStatus } from "../enums/index.js";
+import type { IsoDateTime, ItemBarcode } from "../primitives/zod.js";
 import type {
   ApiDataResponse,
   ApiMessageResponse,
   ApiPaginatedResponse,
 } from "../types/response.js";
-import type { CategoryDto, CategoryRefDto } from "./categories.js";
-import type { RecycleryDto, RecycleryRefDto } from "./recycleries.js";
-import type { UserDto, UserRefDto } from "./users.js";
+import type { CategoryBaseDto, CategoryRefDto } from "./categories.js";
+import type { RecycleryBaseDto, RecycleryRefDto } from "./recycleries.js";
+import type { UserBaseDto, UserRefDto } from "./users.js";
 
 /** Category ref expanded with direct children (e.g. items `include=category.subcategories`). */
 export interface LabeledItemCategoryDto extends CategoryRefDto {
-  subcategories?: CategoryRefDto[];
+  subcategories?: CategoryRefDto[] | undefined;
 }
 
-export interface LabeledItemDto {
+export interface LabeledItemBaseDto {
   id: number;
-  barcode: string;
-  description?: string | null;
+  description: string | null;
   weight: number;
   price: number;
-  cost?: number | null;
+  cost: number | null;
   condition_state: ConditionState;
   status: LabeledItemStatus;
-  category_id: CategoryDto["id"];
-  subcategory_id?: CategoryDto["id"] | null;
-  recyclery_id?: RecycleryDto["id"] | null;
-  created_by?: UserDto["id"] | null;
-  createdAt: string;
-  updatedAt: string;
-  category?: LabeledItemCategoryDto;
-  subcategory?: CategoryRefDto | null;
-  recyclery?: RecycleryRefDto | null;
-  createdBy?: UserRefDto | null;
+  category_id: CategoryBaseDto["id"];
+  subcategory_id: CategoryBaseDto["id"] | null;
+  recyclery_id: RecycleryBaseDto["id"] | null;
+  created_by: UserBaseDto["id"] | null;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface LabeledItemDto extends LabeledItemBaseDto {
+  /** Virtual: zero-padded id used as barcode (always 12 digits). */
+  barcode: ItemBarcode;
+  category?: LabeledItemCategoryDto | undefined;
+  subcategory?: CategoryRefDto | null | undefined;
+  recyclery?: RecycleryRefDto | null | undefined;
+  createdBy?: UserRefDto | null | undefined;
 }
 
 export interface LabeledItemStatsDto {
-  total_items?: number | string;
-  available_items?: number | string | null;
-  sold_items?: number | string | null;
-  reserved_items?: number | string | null;
-  total_value?: number | string | null;
+  total_items?: number | undefined;
+  available_items?: number | null | undefined;
+  sold_items?: number | null | undefined;
+  reserved_items?: number | null | undefined;
+  total_value?: number | null | undefined;
 }
 
 export type ListLabeledItemsResponse = ApiPaginatedResponse<LabeledItemDto>;

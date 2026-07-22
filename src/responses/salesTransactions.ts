@@ -8,37 +8,44 @@ import type {
 import type {
   EmailAddress,
   FrenchPostalCode,
+  IsoDateTime,
 } from "../primitives/zod.js";
 import type {
   ApiDataResponse,
   ApiMessageResponse,
   ApiPaginatedResponse,
 } from "../types/response.js";
-import type { CashSessionDto } from "./cashSession.js";
-import type { CategoryDto } from "./categories.js";
-import type { GiftCardDto, GiftCardSummaryDto } from "./giftCards.js";
+import type { CashSessionBaseDto, CashSessionDto } from "./cashSession.js";
+import type { CategoryBaseDto } from "./categories.js";
+import type { GiftCardBaseDto, GiftCardSummaryDto } from "./giftCards.js";
 import type { LabeledItemDto } from "./items.js";
-import type { UserDto, UserRefDto } from "./users.js";
+import type { UserBaseDto, UserRefDto } from "./users.js";
 
 export type { GiftCardSummaryDto };
 
-export interface TransactionPaymentDto {
+export interface TransactionPaymentBaseDto {
   id: number;
   method: PaymentMethod;
   amount: number;
-  metadata?: Record<string, unknown> | null;
-  gift_card_id?: GiftCardDto["id"] | null;
-  createdAt: string;
-  updatedAt: string;
+  metadata: Record<string, unknown> | null;
+  sales_transaction_id: SalesTransactionBaseDto["id"];
+  gift_card_id: GiftCardBaseDto["id"] | null;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
 }
 
-export interface TransactionGlobalPromotionDto {
+export interface TransactionPaymentDto extends TransactionPaymentBaseDto {}
+
+export interface TransactionGlobalPromotionBaseDto {
   id: number;
   value: number;
   type: PromotionType;
-  createdAt: string;
-  updatedAt: string;
+  transaction_id: SalesTransactionBaseDto["id"];
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
 }
+
+export interface TransactionGlobalPromotionDto extends TransactionGlobalPromotionBaseDto {}
 
 /** Per-line sale data from the `TransactionItem` join (quantity, line price, promo, bundle). */
 export interface TransactionItemLineDto {
@@ -46,11 +53,11 @@ export interface TransactionItemLineDto {
   price: number;
   quantity: number;
   promotionValue: number;
-  bundleQuantity?: number | null;
-  bundlePrice?: number | null;
+  bundleQuantity: number | null;
+  bundlePrice: number | null;
   total_price: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
 }
 
 /** A labeled item as it appears inside a sale, carrying its `TransactionItem` line data. */
@@ -58,46 +65,51 @@ export interface SalesTransactionItemDto extends LabeledItemDto {
   TransactionItem: TransactionItemLineDto ;
 }
 
-
-export interface SalesTransactionDto {
+export interface SalesTransactionBaseDto {
   id: number;
   total_amount_before_promotion: number;
   total_amount: number;
   payment_method: SalesPaymentMethod;
   transactionType: TransactionType;
   payment_amount: number;
-  change_amount?: number;
-  global_promotion?: number | null;
-  global_promotion_type?: PromotionType | null;
-  customer_name?: string | null;
-  customer_email?: EmailAddress | null;
-  customer_postal_code?: FrenchPostalCode | null;
+  customer_name: string | null;
+  customer_email: EmailAddress | null;
+  customer_postal_code: FrenchPostalCode | null;
   status: SalesTransactionStatus;
-  cash_session_id: CashSessionDto["id"];
-  created_by: UserDto["id"];
-  transactionId?: SalesTransactionDto["id"] | null;//TODO required ?
-  createdAt: string;
-  updatedAt: string;
-  items?: SalesTransactionItemDto[];
-  payments?: TransactionPaymentDto[];
-  globalPromotions?: TransactionGlobalPromotionDto[];
-  CashSession?: CashSessionDto | null;
-  User?: UserRefDto | null;
-  refunds?: SalesTransactionDto[];
-  giftCards?: GiftCardSummaryDto[];//TODO wht not ref
+  cash_session_id: CashSessionBaseDto["id"];
+  created_by: UserBaseDto["id"] | null;
+  transactionId: SalesTransactionBaseDto["id"] | null;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface SalesTransactionDto extends SalesTransactionBaseDto {
+  /** Virtual: payment − total. */
+  change_amount?: number | undefined;
+  /** Virtual: from first `globalPromotions` row. */
+  global_promotion: number | null;
+  /** Virtual: from first `globalPromotions` row. */
+  global_promotion_type: PromotionType | null;
+  items?: SalesTransactionItemDto[] | undefined;
+  payments?: TransactionPaymentDto[] | undefined;
+  globalPromotions?: TransactionGlobalPromotionDto[] | undefined;
+  CashSession?: CashSessionDto | null | undefined;
+  User?: UserRefDto | null | undefined;
+  refunds?: SalesTransactionDto[] | undefined;
+  giftCards?: GiftCardSummaryDto[] | undefined;//TODO wht not ref
 }
 
 export interface SalesTransactionStatsDto {
   total_transactions: number;
-  total_sales: number | string;
-  total_sales_before_refunds: number | string;
-  average_transaction: number | string;
-  sessions_count: number | string;
+  total_sales: number;
+  total_sales_before_refunds: number;
+  average_transaction: number;
+  sessions_count: number;
   total_refunded: number;
   payment_methods: {
     payment_method: PaymentMethod;
-    total: number | string;//TODO 
-    count: number | string;//TODO 
+    total: number;
+    count: number;
   }[];
   by_day: {
     date: string;
@@ -105,18 +117,18 @@ export interface SalesTransactionStatsDto {
     total_amount: number;
   }[];
   by_category: {
-    category_id: CategoryDto["id"] | string | null;
-    category_name: CategoryDto["name"] | null;
+    category_id: CategoryBaseDto["id"] | null;
+    category_name: CategoryBaseDto["name"] | null;
     total_quantity: number;
     total_price_sum: number;
   }[];
 }
 
 export interface PostalCodeStatsDto {
-  customer_postal_code: FrenchPostalCode | null;
-  transaction_count: number | string;
-  average_transaction: number | string;
-  total_sales: number | string;
+  customer_postal_code: FrenchPostalCode;
+  transaction_count: number;
+  average_transaction: number;
+  total_sales: number;
 }
 
 export interface CreateSaleTransactionResultDto {
@@ -126,7 +138,7 @@ export interface CreateSaleTransactionResultDto {
 
 export interface CreateRefundResultDto {
   refund: SalesTransactionDto;
-  giftCard?: GiftCardSummaryDto;
+  giftCard?: GiftCardSummaryDto | undefined;
 }
 
 export interface ListRefundsResultDto {

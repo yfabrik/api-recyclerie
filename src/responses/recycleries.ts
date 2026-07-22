@@ -6,41 +6,47 @@ import type {
   EmailAddress,
   FrenchPhoneNumber,
   FrenchPostalCode,
+  IsoDateTime,
 } from "../primitives/zod.js";
-import type { UserDto, UserRefDto } from "./users.js";
-import type { CashRegisterDto } from "./cashRegister.js";
+import type { UserBaseDto, UserRefDto } from "./users.js";
+import type { CashRegisterDto, CashRegisterRefDto } from "./cashRegister.js";
 import type { EmployeeDto } from "./employees.js";
 import type { TaskScheduleDto } from "./taskSchedule.js";
 
-export interface RecycleryDto {
+export interface RecycleryBaseDto {
   id: number;
   name: string;
-  address?: string | null;
-  phone?: FrenchPhoneNumber | null;
-  email?: EmailAddress | null;
-  city?: string | null;
-  postal_code?: FrenchPostalCode | null;
+  address: string | null;
+  phone: FrenchPhoneNumber | null;
+  email: EmailAddress | null;
+  city: string | null;
+  postal_code: FrenchPostalCode | null;
   is_active: boolean;
-  manager_id?: UserDto["id"] | null;
-  cash_registers_count?: number | string;//TODO where can i find it ? is it really string ?
-  createdAt: string;
-  updatedAt: string;
-  manager?: UserRefDto | null;
-  caisses?: CashRegisterDto[];
-  employees?: EmployeeDto[];
-  TaskSchedules?: TaskScheduleDto[];
+  manager_id: UserBaseDto["id"] | null;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface RecycleryDto extends RecycleryBaseDto {
+  /** List-query aggregate (`COUNT` of cash registers). */
+  cash_registers_count?: number | undefined;
+  manager?: UserRefDto | null | undefined;
+  /** Nested registers are refs only; use cash-register list for aggregates. */
+  caisses?: CashRegisterRefDto[] | undefined;
+  employees?: EmployeeDto[] | undefined;
+  TaskSchedules?: TaskScheduleDto[] | undefined;
 }
 
 export type RecycleryRefDto = Pick<
-  RecycleryDto,
+  RecycleryBaseDto,
   "id" | "name" | "city" | "is_active"
 >;
 
 export interface RecycleryStatsDto {
-  available_items?: number | string | null;
-  sold_items?: number | string | null;
-  reserved_items?: number | string | null;
-  total_items?: number | string | null;
+  available_items?: number | null | undefined;
+  sold_items?: number | null | undefined;
+  reserved_items?: number | null | undefined;
+  total_items?: number | null | undefined;
   monthly_sales: number;
   monthly_revenue: number;
 }

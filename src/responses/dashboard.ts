@@ -39,7 +39,16 @@ export interface DashboardChartsDto {
 }
 
 //TODO the 2 should be the same
-export interface DashboardStoreMonthStatsDto {
+// export interface DashboardStoreMonthStatsDto {
+//   transactions: number;
+//   revenue: number;
+//   averageTransaction: number;
+//   sessions: number;
+//   start: string;
+//   end: string;
+// }
+
+export interface DashboardStorePeriodStatsDto {
   transactions: number;
   revenue: number;
   averageTransaction: number;
@@ -48,16 +57,9 @@ export interface DashboardStoreMonthStatsDto {
   end: string;
 }
 
-export interface DashboardStorePeriodStatsDto {
-  transactions: number;
-  revenue: number;
-  start: string;
-  end: string;
-}
-
 
 export interface DashboardStoreStatsBlockDto {
-  currentMonth: DashboardStoreMonthStatsDto;
+  currentMonth: DashboardStorePeriodStatsDto;
   lastMonth: DashboardStorePeriodStatsDto;
   items: { available: number; sold: number };
   growth: { revenue: number };
@@ -68,18 +70,18 @@ export interface DashboardStoreDto {
   // Pick fields from RecycleryDto
   id: RecycleryDto["id"];
   name: RecycleryDto["name"];
-  address?: RecycleryDto["address"];
-  phone?: RecycleryDto["phone"];
-  email?: RecycleryDto["email"];
+  address?: RecycleryDto["address"] | undefined;
+  phone?: RecycleryDto["phone"] | undefined;
+  email?: RecycleryDto["email"] | undefined;
   stats: DashboardStoreStatsBlockDto;
 }
 
 export interface DashboardStoreHistoryDto {
   id: RecycleryDto["id"];
   name: RecycleryDto["name"];
-  address?: RecycleryDto["address"];
-  phone?: RecycleryDto["phone"];
-  email?: RecycleryDto["email"];
+  address?: RecycleryDto["address"] | undefined;
+  phone?: RecycleryDto["phone"] | undefined;
+  email?: RecycleryDto["email"] | undefined;
   stats: DashboardStoreStatsBlockDto[];
 }
 

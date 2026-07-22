@@ -1,14 +1,18 @@
 import z from "zod";
 
-import { EMPLOYEE_DAYS_OF_WEEK, TIME_SLOTS } from "../enums/index.js";
-import { enumSchema, idSchema } from "../primitives/zod.js";
+import { TIME_SLOTS } from "../enums/index.js";
+import {
+  enumSchema,
+  isoTimeSchema,
+  weekdaySchema,
+} from "../primitives/zod.js";
 
 export const employeeWorkdayItemSchema = z.object({
-  day_of_week: enumSchema(EMPLOYEE_DAYS_OF_WEEK, "jour requis"),
+  day_of_week: weekdaySchema("jour requis"),
   time_slot: enumSchema(TIME_SLOTS, "créneau requis"),
   is_working: z.boolean(),
-  start_time: z.iso.time(),
-  end_time: z.iso.time(),
+  start_time: isoTimeSchema("heure de début requise"),
+  end_time: isoTimeSchema("heure de fin requise"),
   notes: z.string().nullish(),
   week: z.string().regex(/^week[1-9]$/, "week format incorrect"),
 });

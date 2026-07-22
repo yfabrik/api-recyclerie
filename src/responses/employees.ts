@@ -1,6 +1,7 @@
 import type {
   EmailAddress,
   FrenchPhoneNumber,
+  IsoDateTime,
 } from "../primitives/zod.js";
 import type {
   ApiDataResponse,
@@ -10,20 +11,25 @@ import type { RecycleryRefDto } from "./recycleries.js";
 import type { EmployeeWorkdayDto } from "./employeeWorkdays.js";
 import type { SkillDto } from "./skills.js";
 
-export interface EmployeeDto {
+export interface EmployeeBaseDto {
   id: number;
   nom: string;
   prenom: string;
   isActive: boolean;
-  phone?: FrenchPhoneNumber | null;
-  email?: EmailAddress | null;
-  fullName?: string;//TODO required ? it nom + prenom 
-  workTime?: number;
-  createdAt: string;
-  updatedAt: string;
-  stores?: RecycleryRefDto[];
-  EmployeeWorkdays?: EmployeeWorkdayDto[];
-  skills?: SkillDto[];
+  phone: FrenchPhoneNumber | null;
+  email: EmailAddress | null;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface EmployeeDto extends EmployeeBaseDto {
+  /** Virtual: `nom` + `prenom`. */
+  fullName?: string | undefined;
+  /** Virtual: derived from loaded `EmployeeWorkdays`. */
+  workTime?: number | undefined;
+  stores?: RecycleryRefDto[] | undefined;
+  EmployeeWorkdays?: EmployeeWorkdayDto[] | undefined;
+  skills?: SkillDto[] | undefined;
 }
 
 export type ListEmployeesResponse = ApiDataResponse<EmployeeDto[]>;

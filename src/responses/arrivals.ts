@@ -1,52 +1,57 @@
 import type { ArrivalSourceType, ArrivalStatus } from "../enums/index.js";
+import type { IsoDateTime, IsoTime } from "../primitives/zod.js";
 import type {
   ApiDataResponse,
   ApiMessageResponse,
   ApiPaginatedResponse,
 } from "../types/response.js";
-import type { CategoryDto, CategoryRefDto } from "./categories.js";
+import type { CategoryBaseDto, CategoryRefDto } from "./categories.js";
 import type {
-  CollectionPointDto,
+  CollectionPointBaseDto,
   CollectionPointRefDto,
 } from "./collectionPoints.js";
-import type { UserDto, UserRefDto } from "./users.js";
+import type { UserBaseDto, UserRefDto } from "./users.js";
 
 //TODO can we make the type require collectionpointid only if source_type is point ?
-export interface ArrivalDto {
+export interface ArrivalBaseDto {
   id: number;
   weight: number;
-  arrival_date: string;
-  arrival_time?: string | null;//TODO can be undefined ?
+  arrival_date: IsoDateTime;
+  arrival_time: IsoTime | null;
   source_type: ArrivalSourceType;
-  source_details?: string | null;
-  notes?: string | null;
+  source_details: string | null;
+  notes: string | null;
   status: ArrivalStatus;
-  processed_by: UserDto["id"];
-  category_id: CategoryDto["id"];
-  subcategory_id?: CategoryDto["id"] | null;
-  collection_point_id?: CollectionPointDto["id"] | null;
-  createdAt: string;
-  updatedAt: string;
-  categorie?: CategoryRefDto;
-  subcategorie?: CategoryRefDto | null;
-  User?: UserRefDto;
-  CollectionPoint?: CollectionPointRefDto | null;
+  processed_by: UserBaseDto["id"];
+  category_id: CategoryBaseDto["id"];
+  subcategory_id: CategoryBaseDto["id"] | null;
+  collection_point_id: CollectionPointBaseDto["id"] | null;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface ArrivalDto extends ArrivalBaseDto {
+  //TODO stop using ref
+  categorie?: CategoryRefDto | undefined;
+  subcategorie?: CategoryRefDto | null | undefined;
+  User?: UserRefDto | undefined;
+  CollectionPoint?: CollectionPointRefDto | null | undefined;
 }
 
 export interface ArrivalStatsDto {
-  total_arrivals?: number | string;
-  total_weight?: number | string | null;
-  from_collection_points?: number | string | null;
-  volunteer_donations?: number | string | null;
-  house_clearances?: number | string | null;
-  pending_processing?: number | string | null;
-  processed?: number | string | null;
+  total_arrivals?: number | undefined;
+  total_weight?: number | null | undefined;
+  from_collection_points?: number | null | undefined;
+  volunteer_donations?: number | null | undefined;
+  house_clearances?: number | null | undefined;
+  pending_processing?: number | null | undefined;
+  processed?: number | null | undefined;
 }
 
 export interface ArrivalCategoryStatsDto {
-  count?: number | string;
-  total_weight?: number | string | null;
-  categorie?: CategoryRefDto;
+  count?: number | undefined;
+  total_weight?: number | null | undefined;
+  categorie?: CategoryRefDto | undefined;
 }
 
 export type ListArrivalsResponse = ApiPaginatedResponse<ArrivalDto>;

@@ -1,13 +1,10 @@
 import z from "zod";
 
-import { idSchema } from "../primitives/zod.js";
+import { idSchema, isoDateSchema } from "../primitives/zod.js";
 
 export const promotionDataSchema = z.object({
-  startDate: z.coerce.date().transform((v) => v.toDateString()),
-  endDate: z.coerce
-    .date()
-    .transform((v) => v.toDateString())
-    .nullable(),
+  startDate: isoDateSchema("date de début requise"),
+  endDate: isoDateSchema().nullable(),
   isActive: z.coerce.boolean().default(true),
   promotionValue: z.coerce
     .number("promotion requise")

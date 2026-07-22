@@ -6,10 +6,10 @@ import type {
   ApiDataResponse,
   ApiMessageResponse,
 } from "../types/response.js";
-import type { UserDto } from "./users.js";
+import type { UserBaseDto } from "./users.js";
 
 export type AuthUserDto = Pick<
-  UserDto,
+  UserBaseDto,
   "id" | "username" | "email" | "role" | "phone"
 >;
 

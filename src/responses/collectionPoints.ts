@@ -4,35 +4,39 @@ import type {
   EmailAddress,
   FrenchPhoneNumber,
   FrenchPostalCode,
+  IsoDateTime,
 } from "../primitives/zod.js";
 import type {
   ApiDataResponse,
   ApiMessageResponse,
 } from "../types/response.js";
-import type { RecycleryDto, RecycleryRefDto } from "./recycleries.js";
+import type { RecycleryBaseDto, RecycleryRefDto } from "./recycleries.js";
 import type { TaskScheduleRefDto } from "./taskSchedule.js";
 
-export interface CollectionPointDto {
+export interface CollectionPointBaseDto {
   id: number;
   name: string;
-  address?: string | null;
-  city?: string | null;
-  postal_code?: FrenchPostalCode | null;
-  contact_person?: AlphanumericString | null;
-  contact_phone?: FrenchPhoneNumber | null;
-  contact_email?: EmailAddress | null;
+  address: string | null;
+  city: string | null;
+  postal_code: FrenchPostalCode | null;
+  contact_person: AlphanumericString | null;
+  contact_phone: FrenchPhoneNumber | null;
+  contact_email: EmailAddress | null;
   type: CollectionPointType;
-  notes?: string | null;
+  notes: string | null;
   is_active: boolean;
-  recyclery_id?: RecycleryDto["id"] | null;
-  createdAt: string;
-  updatedAt: string;
-  Recyclery?: RecycleryRefDto | null;
-  TaskSchedules?: TaskScheduleRefDto[];
+  recyclery_id: RecycleryBaseDto["id"] | null;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface CollectionPointDto extends CollectionPointBaseDto {
+  Recyclery?: RecycleryRefDto | null | undefined;
+  TaskSchedules?: TaskScheduleRefDto[] | undefined;
 }
 
 export type CollectionPointRefDto = Pick<
-  CollectionPointDto,
+  CollectionPointBaseDto,
   "id" | "name" | "city" | "is_active"
 >;
 

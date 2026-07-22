@@ -1,7 +1,7 @@
 import z from "zod";
 
 import { WASTE_DISPOSAL_TYPES } from "../enums/index.js";
-import { enumSchema, idSchema } from "../primitives/zod.js";
+import { enumSchema, idSchema, isoDateSchema } from "../primitives/zod.js";
 
 export const wasteBodySchema = z
   .object({
@@ -32,13 +32,13 @@ export const listWasteQuerySchema = z.object({
   subcategory_id: idSchema().nullish(),
   eco_organism_id: idSchema().nullish(),
   disposal_type: enumSchema(WASTE_DISPOSAL_TYPES).nullish(),
-  date_from: z.coerce.date().optional(),
-  date_to: z.coerce.date().optional(),
+  date_from: isoDateSchema().optional(),
+  date_to: isoDateSchema().optional(),
 });
 
 export const wasteDateRangeQuerySchema = z.object({
-  date_from: z.coerce.date().optional(),
-  date_to: z.coerce.date().optional(),
+  date_from: isoDateSchema().optional(),
+  date_to: isoDateSchema().optional(),
 });
 
 export const wasteIdParamsSchema = z.object({
