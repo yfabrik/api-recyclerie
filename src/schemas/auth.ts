@@ -42,4 +42,6 @@ export const updatePasswordSchema = z
 export type RegisterBody = z.infer<typeof registerSchema>;
 export type LoginBody = z.infer<typeof loginSchema>;
 export type UpdateProfileBody = z.infer<typeof updateProfileSchema>;
+export type UpdateProfileInput = z.input<typeof updateProfileSchema>;
+
 export type UpdatePasswordBody = z.infer<typeof updatePasswordSchema>;
