@@ -118,6 +118,13 @@ export const WASTE_DISPOSAL_TYPES = [
 ] as const;
 export type WasteDisposalType = (typeof WASTE_DISPOSAL_TYPES)[number];
 
+export const VACATION_REASONS = [
+  "paid_vacation",
+  "sick",
+  "other",
+] as const;
+export type VacationReason = (typeof VACATION_REASONS)[number];
+
 /** @deprecated Use Weekday 0–6 (JS getDay). Kept for reference during migration. */
 export const EMPLOYEE_DAYS_OF_WEEK = [
   "monday",

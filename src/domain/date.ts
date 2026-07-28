@@ -8,16 +8,21 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat.js";
 import timezone from "dayjs/plugin/timezone.js";
 import utc from "dayjs/plugin/utc.js";
+import weekOfYear from "dayjs/plugin/weekOfYear.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
+dayjs.extend(weekOfYear);
 
 export const APP_TZ = "Europe/Paris";//TODO should come from env
 
 dayjs.tz.setDefault(APP_TZ);
 
 export const now = () => dayjs().tz(APP_TZ);
+
+export const getWeekNumber = (d: string | Date | dayjs.Dayjs) =>
+  dayjs.tz(d, APP_TZ).week();
 
 export const startOfDay = (d: string | Date | dayjs.Dayjs) =>
   dayjs.tz(d, APP_TZ).startOf("day");
