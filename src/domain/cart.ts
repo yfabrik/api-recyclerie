@@ -1,4 +1,4 @@
-import type { PaymentMethod, TransactionType } from "../enums/index.js";
+import type { PaymentMethod, SalesPaymentMethod, TransactionType } from "../enums/index.js";
 
 export type CartLine = {
   quantity: number;
@@ -110,13 +110,13 @@ export const isAmountEqual = (a: number, b: number) =>
   Math.abs(roundCurrency(a) - roundCurrency(b)) === 0;
 
 type Category = {
-  Promotions: {
+  Promotions?: {
     promotionValue: number;
-  }[];
+  }[]|undefined;
 }
 
 type CashInTransaction = {
-  payment_method: PaymentMethod;
+  payment_method: SalesPaymentMethod;
   transactionType: TransactionType;
   total_amount: number;
   payments?: Array<{ method: PaymentMethod; amount: number }>;
