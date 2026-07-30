@@ -30,24 +30,209 @@
       "types": "./dist/types/response.d.ts",
       "import": "./dist/types/response.js"
     },
-    "./schemas/*": {
-      "types": "./dist/schemas/*.d.ts",
-      "import": "./dist/schemas/*.js"
+    "./schemas/arrivals": {
+      "types": "./dist/schemas/arrivals.d.ts",
+      "import": "./dist/schemas/arrivals.js"
     },
-    "./responses/*": {
-      "types": "./dist/responses/*.d.ts",
-      "import": "./dist/responses/*.js"
+    "./schemas/auth": {
+      "types": "./dist/schemas/auth.d.ts",
+      "import": "./dist/schemas/auth.js"
     },
-    "./domain/*": {
-      "types": "./dist/domain/*.d.ts",
-      "import": "./dist/domain/*.js"
+    "./schemas/cashRegister": {
+      "types": "./dist/schemas/cashRegister.d.ts",
+      "import": "./dist/schemas/cashRegister.js"
+    },
+    "./schemas/cashSession": {
+      "types": "./dist/schemas/cashSession.d.ts",
+      "import": "./dist/schemas/cashSession.js"
+    },
+    "./schemas/categories": {
+      "types": "./dist/schemas/categories.d.ts",
+      "import": "./dist/schemas/categories.js"
+    },
+    "./schemas/collectionPoints": {
+      "types": "./dist/schemas/collectionPoints.d.ts",
+      "import": "./dist/schemas/collectionPoints.js"
+    },
+    "./schemas/donations": {
+      "types": "./dist/schemas/donations.d.ts",
+      "import": "./dist/schemas/donations.js"
+    },
+    "./schemas/ecoOrganism": {
+      "types": "./dist/schemas/ecoOrganism.d.ts",
+      "import": "./dist/schemas/ecoOrganism.js"
+    },
+    "./schemas/employees": {
+      "types": "./dist/schemas/employees.d.ts",
+      "import": "./dist/schemas/employees.js"
+    },
+    "./schemas/employeeStore": {
+      "types": "./dist/schemas/employeeStore.d.ts",
+      "import": "./dist/schemas/employeeStore.js"
+    },
+    "./schemas/employeeWorkdays": {
+      "types": "./dist/schemas/employeeWorkdays.d.ts",
+      "import": "./dist/schemas/employeeWorkdays.js"
+    },
+    "./schemas/giftCards": {
+      "types": "./dist/schemas/giftCards.d.ts",
+      "import": "./dist/schemas/giftCards.js"
+    },
+    "./schemas/items": {
+      "types": "./dist/schemas/items.d.ts",
+      "import": "./dist/schemas/items.js"
+    },
+    "./schemas/promotions": {
+      "types": "./dist/schemas/promotions.d.ts",
+      "import": "./dist/schemas/promotions.js"
+    },
+    "./schemas/recycleries": {
+      "types": "./dist/schemas/recycleries.d.ts",
+      "import": "./dist/schemas/recycleries.js"
+    },
+    "./schemas/salesTransactions": {
+      "types": "./dist/schemas/salesTransactions.d.ts",
+      "import": "./dist/schemas/salesTransactions.js"
+    },
+    "./schemas/schedules": {
+      "types": "./dist/schemas/schedules.d.ts",
+      "import": "./dist/schemas/schedules.js"
+    },
+    "./schemas/skills": {
+      "types": "./dist/schemas/skills.d.ts",
+      "import": "./dist/schemas/skills.js"
+    },
+    "./schemas/tasks": {
+      "types": "./dist/schemas/tasks.d.ts",
+      "import": "./dist/schemas/tasks.js"
+    },
+    "./schemas/taskSchedule": {
+      "types": "./dist/schemas/taskSchedule.d.ts",
+      "import": "./dist/schemas/taskSchedule.js"
+    },
+    "./schemas/users": {
+      "types": "./dist/schemas/users.d.ts",
+      "import": "./dist/schemas/users.js"
+    },
+    "./schemas/vacations": {
+      "types": "./dist/schemas/vacations.d.ts",
+      "import": "./dist/schemas/vacations.js"
+    },
+    "./schemas/waste": {
+      "types": "./dist/schemas/waste.d.ts",
+      "import": "./dist/schemas/waste.js"
+    },
+    "./responses/arrivals": {
+      "types": "./dist/responses/arrivals.d.ts",
+      "import": "./dist/responses/arrivals.js"
+    },
+    "./responses/auth": {
+      "types": "./dist/responses/auth.d.ts",
+      "import": "./dist/responses/auth.js"
+    },
+    "./responses/cashRegister": {
+      "types": "./dist/responses/cashRegister.d.ts",
+      "import": "./dist/responses/cashRegister.js"
+    },
+    "./responses/cashSession": {
+      "types": "./dist/responses/cashSession.d.ts",
+      "import": "./dist/responses/cashSession.js"
+    },
+    "./responses/categories": {
+      "types": "./dist/responses/categories.d.ts",
+      "import": "./dist/responses/categories.js"
+    },
+    "./responses/collectionPoints": {
+      "types": "./dist/responses/collectionPoints.d.ts",
+      "import": "./dist/responses/collectionPoints.js"
+    },
+    "./responses/dashboard": {
+      "types": "./dist/responses/dashboard.d.ts",
+      "import": "./dist/responses/dashboard.js"
+    },
+    "./responses/donations": {
+      "types": "./dist/responses/donations.d.ts",
+      "import": "./dist/responses/donations.js"
+    },
+    "./responses/ecoOrganism": {
+      "types": "./dist/responses/ecoOrganism.d.ts",
+      "import": "./dist/responses/ecoOrganism.js"
+    },
+    "./responses/employees": {
+      "types": "./dist/responses/employees.d.ts",
+      "import": "./dist/responses/employees.js"
+    },
+    "./responses/employeeStore": {
+      "types": "./dist/responses/employeeStore.d.ts",
+      "import": "./dist/responses/employeeStore.js"
+    },
+    "./responses/employeeWorkdays": {
+      "types": "./dist/responses/employeeWorkdays.d.ts",
+      "import": "./dist/responses/employeeWorkdays.js"
+    },
+    "./responses/giftCards": {
+      "types": "./dist/responses/giftCards.d.ts",
+      "import": "./dist/responses/giftCards.js"
+    },
+    "./responses/items": {
+      "types": "./dist/responses/items.d.ts",
+      "import": "./dist/responses/items.js"
+    },
+    "./responses/promotions": {
+      "types": "./dist/responses/promotions.d.ts",
+      "import": "./dist/responses/promotions.js"
+    },
+    "./responses/recycleries": {
+      "types": "./dist/responses/recycleries.d.ts",
+      "import": "./dist/responses/recycleries.js"
+    },
+    "./responses/salesTransactions": {
+      "types": "./dist/responses/salesTransactions.d.ts",
+      "import": "./dist/responses/salesTransactions.js"
+    },
+    "./responses/skills": {
+      "types": "./dist/responses/skills.d.ts",
+      "import": "./dist/responses/skills.js"
+    },
+    "./responses/tasks": {
+      "types": "./dist/responses/tasks.d.ts",
+      "import": "./dist/responses/tasks.js"
+    },
+    "./responses/taskSchedule": {
+      "types": "./dist/responses/taskSchedule.d.ts",
+      "import": "./dist/responses/taskSchedule.js"
+    },
+    "./responses/users": {
+      "types": "./dist/responses/users.d.ts",
+      "import": "./dist/responses/users.js"
+    },
+    "./responses/vacations": {
+      "types": "./dist/responses/vacations.d.ts",
+      "import": "./dist/responses/vacations.js"
+    },
+    "./responses/waste": {
+      "types": "./dist/responses/waste.d.ts",
+      "import": "./dist/responses/waste.js"
+    },
+    "./domain/cart": {
+      "types": "./dist/domain/cart.d.ts",
+      "import": "./dist/domain/cart.js"
+    },
+    "./domain/cartValidation": {
+      "types": "./dist/domain/cartValidation.d.ts",
+      "import": "./dist/domain/cartValidation.js"
+    },
+    "./domain/date": {
+      "types": "./dist/domain/date.d.ts",
+      "import": "./dist/domain/date.js"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "generate:exports": "node scripts/generate-exports.mjs",
+    "build": "npm run generate:exports && tsc",
     "prepublishOnly": "npm run build",
     "prepare": "npm run build"
   },
