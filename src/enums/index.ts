@@ -181,3 +181,10 @@ export type TaskPriority = (typeof TASK_PRIORITIES)[number];
 /** Quarter month range label, e.g. "01-2026--03-2026" */
 export type EcoOrgQuarterMonthRangeLabel =
   `${string}-${number}--${string}-${number}`;
+
+export const ECO_ORG_METRIC_SOURCES = [
+  "quarterIn",
+  "quarterOut",
+  "quarterSell",
+] as const;
+export type EcoOrgMetricSource = (typeof ECO_ORG_METRIC_SOURCES)[number];
