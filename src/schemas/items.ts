@@ -20,13 +20,14 @@ export const labeledItemDataSchema = z.object({
   subcategory_id: idSchema().nullish().prefault(null),
   weight: z.coerce.number().nonnegative("poid requis").default(0),
   price: z.coerce.number().nonnegative("prix requis"),
-  cost: z.coerce.number().nonnegative().nullish().prefault(null),
+  cost: z.coerce.number().nonnegative().nullish().prefault(null),//TODO alors il exist sur le models mais jamais use
   condition_state: enumSchema(CONDITION_STATES).optional(),
-  location: z.string().nullish(),
-  arrival_id: idSchema().nullish(),
-  purchase_price: z.coerce.number().nonnegative().nullish(),
-  selling_price: z.coerce.number().nonnegative().nullish(),
+  location: z.string().nullish(),//TODO exist meme pas sur le model
+  arrival_id: idSchema().nullish(),//TODO lien exist pas
+  purchase_price: z.coerce.number().nonnegative().nullish(),//TODO exist pas et ça fais doublon avec cost, peut etre que c'est a cause de donation, mais c'est pas sur item en tout cas
+  selling_price: z.coerce.number().nonnegative().nullish(),//TODO exist pas et ça fais doublon avec cost, peut etre que c'est a cause de donation, mais c'est pas sur item en tout cas
   recyclery_id: idSchema().nullish().prefault(null),
+  quantity: z.coerce.number().int().positive().max(100).default(1),
 });
 
 export const labeledItemFilterSchema = z.object({

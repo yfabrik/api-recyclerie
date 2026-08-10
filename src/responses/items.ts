@@ -49,7 +49,7 @@ export interface LabeledItemStatsDto {
 
 export type ListLabeledItemsResponse = ApiPaginatedResponse<LabeledItemDto>;
 export type DetailLabeledItemResponse = ApiDataResponse<LabeledItemDto>;
-export type CreateLabeledItemResponse = ApiDataResponse<LabeledItemDto>;
+export type CreateLabeledItemResponse = ApiDataResponse<LabeledItemDto[]>;
 export type UpdateLabeledItemResponse = ApiDataResponse<LabeledItemDto>;
 export type DeleteLabeledItemResponse = ApiMessageResponse;
 export type TagLabeledItemSoldResponse = ApiMessageResponse;
