@@ -3,13 +3,13 @@ import type {
   ApiDataResponse,
   ApiMessageResponse,
 } from "../types/response.js";
-import type { EmployeeDto } from "./employees.js";
+import type { EmployeeBaseDto, EmployeeDto } from "./employees.js";
 import type { TaskBaseDto } from "./tasks.js";
 
 /** A stretch of a Task covered by an Employee. Times are `HH:MM`, the Task's own day. */
 export interface TimeRangeDto {
   id: number;
-  employee_id: EmployeeDto["id"];
+  employee_id: EmployeeBaseDto["id"];
   task_id: TaskBaseDto["id"];
   start_time: IsoTime;
   end_time: IsoTime;
