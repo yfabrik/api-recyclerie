@@ -2,6 +2,7 @@ import * as z from "zod";
 
 import { RECURRENCE_PATTERNS, TASK_CATEGORIES } from "../enums/index.js";
 import { enumSchema, idSchema, isoDateSchema } from "../primitives/zod.js";
+import { timeRangeBodySchema } from "./timeRanges.js";
 
 export const taskDataSchema = z.object({
   name: z.string("Nom requis"),
@@ -47,12 +48,18 @@ export const taskListFilterSchema = z.object({
   store_id: idSchema().nullish(),
 });
 
-export const assignEmployeeToTaskBodySchema = z.object({
-  employee_id: idSchema("ID employé requis"),
-});
+/** Optional range: give both `start_time` and `end_time`, or neither (the server picks the first free window). */
+export const assignEmployeeToTaskBodySchema = timeRangeBodySchema
+  .partial()
+  .extend({ employee_id: idSchema("ID employé requis") })
+  .refine((body) => (body.start_time === undefined) === (body.end_time === undefined), {
+    message: "start_time et end_time vont ensemble",
+    path: ["end_time"],
+  });
 
 export type TaskData = z.infer<typeof taskDataSchema>;
 export type TaskListFilter = z.infer<typeof taskListFilterSchema>;
+export type AssignEmployeeToTaskBody = z.infer<typeof assignEmployeeToTaskBodySchema>;
 
 export type TaskDataInput = z.input<typeof taskDataSchema>;
 export type TaskListFilterInput = z.input<typeof taskListFilterSchema>;

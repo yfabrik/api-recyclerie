@@ -110,6 +110,10 @@
       "types": "./dist/schemas/taskSchedule.d.ts",
       "import": "./dist/schemas/taskSchedule.js"
     },
+    "./schemas/timeRanges": {
+      "types": "./dist/schemas/timeRanges.d.ts",
+      "import": "./dist/schemas/timeRanges.js"
+    },
     "./schemas/users": {
       "types": "./dist/schemas/users.d.ts",
       "import": "./dist/schemas/users.js"
@@ -202,6 +206,10 @@
       "types": "./dist/responses/taskSchedule.d.ts",
       "import": "./dist/responses/taskSchedule.js"
     },
+    "./responses/timeRanges": {
+      "types": "./dist/responses/timeRanges.d.ts",
+      "import": "./dist/responses/timeRanges.js"
+    },
     "./responses/users": {
       "types": "./dist/responses/users.d.ts",
       "import": "./dist/responses/users.js"
@@ -225,6 +233,10 @@
     "./domain/date": {
       "types": "./dist/domain/date.d.ts",
       "import": "./dist/domain/date.js"
+    },
+    "./domain/timeRange": {
+      "types": "./dist/domain/timeRange.d.ts",
+      "import": "./dist/domain/timeRange.js"
     }
   },
   "files": [
@@ -234,7 +246,8 @@
     "generate:exports": "node scripts/generate-exports.mjs",
     "build": "npm run generate:exports && tsc",
     "prepublishOnly": "npm run build",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "test": "vitest run"
   },
   "peerDependencies": {
     "dayjs": "^1.11.0",
@@ -243,6 +256,7 @@
   "devDependencies": {
     "dayjs": "^1.11.19",
     "typescript": "^5.9.3",
+    "vitest": "^5.0.1",
     "zod": "^4.3.5"
   }
 }
