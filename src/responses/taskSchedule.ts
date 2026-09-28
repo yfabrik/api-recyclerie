@@ -89,13 +89,6 @@ export interface PlanningStatsDto {
   topEmployees: unknown[];
 }
 
-export interface AvailableEmployeeDto extends EmployeeDto {
-  is_available: boolean;
-  has_conflicts: boolean;
-  conflicts: TaskDto[];
-  already_assigned: boolean;
-}
-
 export type ListTaskSchedulesResponse = ApiDataResponse<TaskScheduleDto[]>;
 export type DetailTaskScheduleResponse = ApiDataResponse<TaskScheduleDto>;
 export type CreateTaskScheduleResponse = ApiDataResponse<TaskScheduleDto>;
@@ -103,7 +96,6 @@ export type UpdateTaskScheduleResponse = ApiMessageResponse;
 export type DeleteTaskScheduleResponse = ApiMessageResponse;
 export type EmployeeScheduleResponse = ApiDataResponse<TaskScheduleDto[]>;
 export type AssignEmployeeScheduleResponse = ApiDataResponse<TaskDto>;
-export type AvailableEmployeesResponse = ApiDataResponse<AvailableEmployeeDto[]>;
 export type PlanningStatsResponse = ApiDataResponse<PlanningStatsDto>;
 
 export type ListStoreHoursResponse = ApiDataResponse<StoreHoursDto[]>;

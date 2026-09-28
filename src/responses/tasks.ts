@@ -8,6 +8,7 @@ import type { CollectionPointBaseDto } from "./collectionPoints.js";
 import type { RecycleryBaseDto, RecycleryRefDto } from "./recycleries.js";
 import type { TaskScheduleBaseDto } from "./taskSchedule.js";
 import type { EmployeeDto } from "./employees.js";
+import type { TimeRangeDto } from "./timeRanges.js";
 
 export interface TaskBaseDto {
   id: number;
@@ -38,11 +39,15 @@ export interface TaskDto extends TaskBaseDto {
   Employees?: EmployeeDto[] | undefined;
 }
 
+/** An assigned Employee as returned by `GET /api/tasks/:id/employees`, with its ranges on that Task. */
+export interface TaskAssignedEmployeeDto extends EmployeeDto {
+  timeRanges: TimeRangeDto[];
+}
+
 export type ListTasksResponse = ApiDataResponse<TaskDto[]>;
 export type DetailTaskResponse = ApiDataResponse<TaskDto>;
 export type CreateTaskResponse = ApiDataResponse<TaskDto>;
 export type UpdateTaskResponse = ApiDataResponse<TaskDto>;
 export type DeleteTaskResponse = ApiMessageResponse;
-export type TaskEmployeesResponse = ApiDataResponse<EmployeeDto[]>;
-export type AssignEmployeeTaskResponse = ApiMessageResponse;
+export type TaskEmployeesResponse = ApiDataResponse<TaskAssignedEmployeeDto[]>;
 export type RemoveEmployeeTaskResponse = ApiMessageResponse;
