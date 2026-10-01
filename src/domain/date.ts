@@ -51,7 +51,9 @@ export const toIsoDate = (
   value: Date | string | null | undefined,
 ): IsoDate => {
   if (value == null) return "1970-01-01" as IsoDate;
-  const d = dayjs.tz(value, APP_TZ);
+  // See `toIsoTime` above: `dayjs(value)` resolves the real instant before `.tz()`
+  // converts it, so an offset-aware datetime string doesn't land on the wrong day.
+  const d = dayjs(value).tz(APP_TZ);
   if (!d.isValid()) return String(value).slice(0, 10) as IsoDate;
   return d.format("YYYY-MM-DD") as IsoDate;
 };
@@ -64,7 +66,10 @@ export const toIsoTime = (
   if (typeof value === "string" && /^\d{2}:\d{2}/.test(value)) {
     return value.slice(0, 5) as IsoTime;
   }
-  const d = dayjs.tz(value, APP_TZ);
+  // `dayjs.tz(value, zone)` ignores an explicit offset/Z in `value` and reads its
+  // digits as literal wall time in `zone`; `dayjs(value)` resolves the real instant
+  // first, so `.tz()` converts it correctly for offset-aware strings and Dates alike.
+  const d = dayjs(value).tz(APP_TZ);
   if (!d.isValid()) return "00:00" as IsoTime;
   return d.format("HH:mm") as IsoTime;
 };
