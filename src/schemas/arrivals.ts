@@ -49,8 +49,19 @@ export const arrivalDateFilterSchema = z.object({
   date_to: isoDateSchema().optional(),
 });
 
+export const arrivalCategoryStatsFilterSchema = arrivalFilterSchema.pick({
+  category_id: true,
+  date_from: true,
+  date_to: true,
+  source_type: true,
+  collection_point_id: true,
+});
+
 export type ArrivalData = z.infer<typeof arrivalDataSchema>;
 export type ArrivalFilter = z.infer<typeof arrivalFilterSchema>;
 
 export type ArrivalFilterInput = z.input<typeof arrivalFilterSchema>;
+export type ArrivalCategoryStatsFilter = z.infer<
+  typeof arrivalCategoryStatsFilterSchema
+>;
 export type arrivalDataInput = z.input<typeof arrivalDataSchema>;
