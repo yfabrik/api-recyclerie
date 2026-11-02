@@ -17,8 +17,8 @@ export type EmployeeTaskStatus = "assigned" | "assignable" | "unavailable";
  * Why an unassigned Task cannot take the Employee:
  * - `outside-hours`: no Workday hours overlap the Task;
  * - `busy`: the Workday hours overlap it but the Employee's Time ranges on another Task cover them (`blockedBy`);
- * - `vacation`: the Employee is on Vacation that day. Declared for the front's exhaustive switches; the
- *   endpoint does not produce it yet.
+ * - `vacation`: the Employee is on Vacation that day (first and last day included). Every Task they do not
+ *   hold gets it, whatever their hours; Tasks they still hold stay `assigned` (a Vacation conflict).
  */
 export type EmployeeTaskUnavailableReason = "outside-hours" | "busy" | "vacation";
 
