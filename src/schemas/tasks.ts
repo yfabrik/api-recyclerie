@@ -32,7 +32,7 @@ export const taskDataSchema = z.object({
   store_id: idSchema().nullish().prefault(null),
 });
 
-const ALLOWED_INCLUDES = ["user", "store"] as const;
+const ALLOWED_INCLUDES = ["user", "store", "timeRanges"] as const;
 
 export const taskListFilterSchema = z.object({
   include: z
