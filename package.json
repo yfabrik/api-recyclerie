@@ -70,6 +70,10 @@
       "types": "./dist/schemas/employeeStore.d.ts",
       "import": "./dist/schemas/employeeStore.js"
     },
+    "./schemas/employeeTasks": {
+      "types": "./dist/schemas/employeeTasks.d.ts",
+      "import": "./dist/schemas/employeeTasks.js"
+    },
     "./schemas/employeeWorkdays": {
       "types": "./dist/schemas/employeeWorkdays.d.ts",
       "import": "./dist/schemas/employeeWorkdays.js"
@@ -169,6 +173,10 @@
     "./responses/employeeStore": {
       "types": "./dist/responses/employeeStore.d.ts",
       "import": "./dist/responses/employeeStore.js"
+    },
+    "./responses/employeeTasks": {
+      "types": "./dist/responses/employeeTasks.d.ts",
+      "import": "./dist/responses/employeeTasks.js"
     },
     "./responses/employeeWorkdays": {
       "types": "./dist/responses/employeeWorkdays.d.ts",

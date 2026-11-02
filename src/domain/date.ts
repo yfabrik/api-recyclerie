@@ -3,7 +3,7 @@
  * Timezone: Europe/Paris. Weekday: JS 0=Sunday … 6=Saturday.
  */
 import type { Weekday } from "../enums/index.js";
-import type { IsoDate, IsoDateTime, IsoTime } from "../primitives/zod.js";
+import { isoDateSchema, type IsoDate, type IsoDateTime, type IsoTime } from "../primitives/zod.js";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat.js";
 import timezone from "dayjs/plugin/timezone.js";
@@ -104,6 +104,20 @@ export const combineDateAndTime = (
     .second(0)
     .millisecond(0)
     .toDate();
+};
+
+/** Every calendar date from `from` to `to`, both included (empty when `to` is before `from`). */
+export const eachIsoDate = (from: IsoDate, to: IsoDate): IsoDate[] => {
+  // Plain UTC arithmetic on the calendar date: no daylight-saving hour to lose.
+  const dates: IsoDate[] = [];
+  for (
+    let day = dayjs.utc(from);
+    !day.isAfter(dayjs.utc(to), "day");
+    day = day.add(1, "day")
+  ) {
+    dates.push(isoDateSchema().parse(day.format("YYYY-MM-DD")));
+  }
+  return dates;
 };
 
 /** Monday-first sort key: Mon=0 … Sun=6. */
