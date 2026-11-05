@@ -55,8 +55,8 @@ export function overlap(a: MinuteWindow, b: MinuteWindow): MinuteWindow | null {
   return clipWindow(a, b);
 }
 
-/** `source` minus every hole, leaving only parts of at least the minimum range length. */
-export function subtractWindows(
+/** `source` minus every hole, whatever length the remaining parts are. */
+function subtractHoles(
   source: MinuteWindow,
   holes: readonly MinuteWindow[],
 ): MinuteWindow[] {
@@ -74,7 +74,17 @@ export function subtractWindows(
     }
     parts = next;
   }
-  return parts.filter((part) => part.end - part.start >= TIME_RANGE_MIN_MINUTES);
+  return parts;
+}
+
+/** `source` minus every hole, leaving only parts of at least the minimum range length. */
+export function subtractWindows(
+  source: MinuteWindow,
+  holes: readonly MinuteWindow[],
+): MinuteWindow[] {
+  return subtractHoles(source, holes).filter(
+    (part) => part.end - part.start >= TIME_RANGE_MIN_MINUTES,
+  );
 }
 
 /** The window containing `minute`, else the one whose edge is closest. */
@@ -98,19 +108,69 @@ export function nearestWindow(
 /**
  * Fits `range` into `window`. A range left shorter than the minimum is grown
  * back to the minimum inside the window; null if the window itself is too short.
+ *
+ * Pass the `task` the range belongs to so growing lands on valid edges: the
+ * 15-minute grid or the Task's own edges, never 10:16 for a range collapsed on a
+ * Task that starts at 10:01. A short leftover touching a Task edge (see
+ * `validateTimeRange`) then counts as long enough. Without `task`, the range
+ * simply grows by the minimum.
  */
 export function clampRangeToWindow(
   range: MinuteRange,
   window: MinuteWindow,
+  task?: MinuteWindow,
 ): [start: number, end: number] | null {
-  let start = Math.max(range[0], window.start);
-  let end = Math.min(range[1], window.end);
-  if (end - start < TIME_RANGE_MIN_MINUTES) {
-    if (window.end - window.start < TIME_RANGE_MIN_MINUTES) return null;
-    start = Math.min(start, window.end - TIME_RANGE_MIN_MINUTES);
-    end = start + TIME_RANGE_MIN_MINUTES;
+  const start = Math.max(range[0], window.start);
+  const end = Math.min(range[1], window.end);
+  const longEnough = (from: number, to: number) =>
+    to - from >= TIME_RANGE_MIN_MINUTES ||
+    (task !== undefined && reachesTaskEdge({ start: from, end: to }, task));
+
+  if (end > start && longEnough(start, end)) return [start, end];
+  if (!longEnough(window.start, window.end)) return null;
+
+  for (const candidate of growthEnds(start, window, task)) {
+    if (longEnough(start, candidate)) return [start, candidate];
   }
-  return [start, end];
+  for (const candidate of shrinkStarts(window, task)) {
+    if (longEnough(candidate, window.end)) return [candidate, window.end];
+  }
+  return null;
+}
+
+/** Ends to try, nearest first, for a range that has to grow from `start`. */
+function growthEnds(start: number, window: MinuteWindow, task?: MinuteWindow): number[] {
+  if (!task) {
+    return start + TIME_RANGE_MIN_MINUTES <= window.end ? [start + TIME_RANGE_MIN_MINUTES] : [];
+  }
+  const ends: number[] = [];
+  for (
+    let end = (Math.floor(start / TIME_RANGE_STEP_MINUTES) + 1) * TIME_RANGE_STEP_MINUTES;
+    end < window.end;
+    end += TIME_RANGE_STEP_MINUTES
+  ) {
+    ends.push(end);
+  }
+  if (window.end > start && isValidEnd(window.end, task)) ends.push(window.end);
+  return ends;
+}
+
+/** Starts to try, nearest the window's end first, for a range pinned to `window.end`. */
+function shrinkStarts(window: MinuteWindow, task?: MinuteWindow): number[] {
+  if (!task) {
+    const start = window.end - TIME_RANGE_MIN_MINUTES;
+    return start >= window.start ? [start] : [];
+  }
+  const starts: number[] = [];
+  for (
+    let start = (Math.ceil(window.end / TIME_RANGE_STEP_MINUTES) - 1) * TIME_RANGE_STEP_MINUTES;
+    start > window.start;
+    start -= TIME_RANGE_STEP_MINUTES
+  ) {
+    starts.push(start);
+  }
+  if (isValidStart(window.start, task)) starts.push(window.start);
+  return starts;
 }
 
 export const TIME_RANGE_VIOLATIONS = [
@@ -160,6 +220,27 @@ function mergeWindows(windows: readonly MinuteWindow[]): MinuteWindow[] {
 
 const isOnGrid = (minute: number) => minute % TIME_RANGE_STEP_MINUTES === 0;
 
+/**
+ * A range edge sits on the 15-minute grid, or on the Task's own edge: a Task
+ * that starts at 10:01 can only be covered from 10:01.
+ */
+const isValidStart = (minute: number, task: MinuteWindow) =>
+  isOnGrid(minute) || minute === task.start;
+
+const isValidEnd = (minute: number, task: MinuteWindow) =>
+  isOnGrid(minute) || minute === task.end;
+
+/**
+ * A non-empty range from the Task's start to a valid end, or from a valid
+ * start to the Task's end. When it is shorter than the minimum it is the
+ * leftover between an off-grid Task edge and the grid, which no longer range
+ * could ever cover.
+ */
+const reachesTaskEdge = (range: MinuteWindow, task: MinuteWindow) =>
+  range.end > range.start &&
+  ((range.start === task.start && isValidEnd(range.end, task)) ||
+    (range.end === task.end && isValidStart(range.start, task)));
+
 const contains = (outer: MinuteWindow, inner: MinuteWindow) =>
   outer.start <= inner.start && inner.end <= outer.end;
 
@@ -168,10 +249,13 @@ export function validateTimeRange(
   range: MinuteWindow,
   context: TimeRangeContext,
 ): TimeRangeCheck {
-  if (range.end - range.start < TIME_RANGE_MIN_MINUTES) {
+  if (
+    range.end - range.start < TIME_RANGE_MIN_MINUTES &&
+    !reachesTaskEdge(range, context.task)
+  ) {
     return { ok: false, reason: "too-short" };
   }
-  if (!isOnGrid(range.start) || !isOnGrid(range.end)) {
+  if (!isValidStart(range.start, context.task) || !isValidEnd(range.end, context.task)) {
     return { ok: false, reason: "off-grid" };
   }
   if (!contains(context.task, range)) {
@@ -191,12 +275,20 @@ export function assignableWindows(context: TimeRangeContext): MinuteWindow[] {
   return mergeWindows(context.workWindows)
     .map((workWindow) => clipWindow(workWindow, context.task))
     .filter((window) => window !== null)
-    .flatMap((window) => subtractWindows(window, context.otherRanges))
+    .flatMap((window) => subtractHoles(window, context.otherRanges))
     .map((window) => ({
-      start: Math.ceil(window.start / TIME_RANGE_STEP_MINUTES) * TIME_RANGE_STEP_MINUTES,
-      end: Math.floor(window.end / TIME_RANGE_STEP_MINUTES) * TIME_RANGE_STEP_MINUTES,
+      start: isValidStart(window.start, context.task)
+        ? window.start
+        : Math.ceil(window.start / TIME_RANGE_STEP_MINUTES) * TIME_RANGE_STEP_MINUTES,
+      end: isValidEnd(window.end, context.task)
+        ? window.end
+        : Math.floor(window.end / TIME_RANGE_STEP_MINUTES) * TIME_RANGE_STEP_MINUTES,
     }))
-    .filter((window) => window.end - window.start >= TIME_RANGE_MIN_MINUTES)
+    .filter(
+      (window) =>
+        window.end - window.start >= TIME_RANGE_MIN_MINUTES ||
+        reachesTaskEdge(window, context.task),
+    )
     .sort((a, b) => a.start - b.start);
 }
 
