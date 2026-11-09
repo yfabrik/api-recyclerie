@@ -79,7 +79,9 @@ export interface GiftCardFigureDto {
  * `GET /gift-cards/analytics`, from the gift card ledger. With a Store
  * selected, the lines traced to a Store through their transaction's cash
  * session are filtered (`sold`, `store_credit`, `top_up`, `used`); the others
- * are network-wide ("tous magasins").
+ * are network-wide ("tous magasins"). Those movement lines count only the
+ * movements of completed transactions; `expired` and `outstanding` read the
+ * card's own ledger balance, whatever its transactions' status.
  */
 export interface GiftCardAnalyticsDto {
   /** Value put on gift cards in the range, by origin. */
