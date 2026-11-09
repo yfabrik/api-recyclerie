@@ -1,3 +1,4 @@
+import type { Weekday } from "../enums/index.js";
 import type { IsoDate } from "../primitives/zod.js";
 import type { ApiDataResponse } from "../types/response.js";
 import type { FrenchPostalCode } from "../primitives/zod.js";
@@ -70,3 +71,29 @@ export interface SalesPostalCodesDto {
 
 export type SalesAnalyticsPostalCodesResponse =
   SalesAnalyticsResponse<SalesPostalCodesDto>;
+
+/** One weekday × hour cell: the Sales and Refunds made in that Paris hour, on that weekday, over the range. */
+export interface SalesHeatmapCellDto {
+  /** Paris clock hour, 0–23: the cell covers `[hour, hour + 1)`. */
+  hour: number;
+  /** Sales − Refunds made in that hour, in euros. Negative when Refunds outweigh Sales. */
+  net_revenue: number;
+  sales_count: number;
+}
+
+export interface SalesHeatmapRowDto {
+  /** Paris weekday, JS numbering: 0 = Sunday … 6 = Saturday. */
+  weekday: Weekday;
+  /** One cell per column, in `hours` order. */
+  cells: SalesHeatmapCellDto[];
+}
+
+/** `GET /sales-transactions/analytics/heatmap`. */
+export interface SalesHeatmapDto {
+  /** Columns: the Paris hours with at least one Sale in the range, ascending. */
+  hours: number[];
+  /** Rows, Monday to Sunday. */
+  rows: SalesHeatmapRowDto[];
+}
+
+export type SalesAnalyticsHeatmapResponse = SalesAnalyticsResponse<SalesHeatmapDto>;
