@@ -246,6 +246,10 @@
       "types": "./dist/domain/date.d.ts",
       "import": "./dist/domain/date.js"
     },
+    "./domain/notableDiscounts": {
+      "types": "./dist/domain/notableDiscounts.d.ts",
+      "import": "./dist/domain/notableDiscounts.js"
+    },
     "./domain/timeRange": {
       "types": "./dist/domain/timeRange.d.ts",
       "import": "./dist/domain/timeRange.js"
