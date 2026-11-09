@@ -1,3 +1,4 @@
+import type { SalesPaymentMethod } from "../enums/index.js";
 import type { IsoDate } from "../primitives/zod.js";
 import type { ApiDataResponse } from "../types/response.js";
 
@@ -43,3 +44,30 @@ export interface SalesKpisDto {
 }
 
 export type SalesAnalyticsKpisResponse = SalesAnalyticsResponse<SalesKpisDto>;
+
+/** One payment method in `GET /sales-transactions/analytics/payment-methods`. Amounts in euros, rounded to the cent. */
+export interface SalesPaymentMethodDto {
+  /** A payment row's method; `mixed` only for an old Sale with no payment rows, whose split is unknown. */
+  method: SalesPaymentMethod;
+  /** Collected on Sales through this method. Cash is what the till kept: change excluded. */
+  sales_amount: number;
+  /** `sales_amount` / the Sales total, from 0 to 1. */
+  sales_share: number;
+  /** Payments on Sales through this method. */
+  payment_count: number;
+  /** Paid back on Refunds through this method, positive. */
+  refunded_amount: number;
+}
+
+/** `GET /sales-transactions/analytics/payment-methods`: Sales split by amount, Refunds apart. */
+export interface SalesPaymentMethodsDto {
+  /** Collected on Sales, all methods: gross revenue. */
+  sales_amount: number;
+  /** Paid back on Refunds, all methods, positive. */
+  refunded_amount: number;
+  /** Every method used by a Sale or a Refund in the range, by `sales_amount` then `refunded_amount`, largest first. */
+  methods: SalesPaymentMethodDto[];
+}
+
+export type SalesAnalyticsPaymentMethodsResponse =
+  SalesAnalyticsResponse<SalesPaymentMethodsDto>;
