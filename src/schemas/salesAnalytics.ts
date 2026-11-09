@@ -59,3 +59,19 @@ export const salesAnalyticsQuerySchema = withDateOrder(
 
 export type SalesAnalyticsQuery = z.infer<typeof salesAnalyticsQuerySchema>;
 export type SalesAnalyticsQueryInput = z.input<typeof salesAnalyticsQuerySchema>;
+
+/**
+ * `GET /sales-transactions/analytics/categories`. Without `parent_id`: the
+ * top-level categories. With it: that category's direct children, plus the
+ * items attached directly to it.
+ */
+export const salesCategoriesQuerySchema = withDateOrder(
+  salesAnalyticsQueryBaseSchema.extend({
+    parent_id: idSchema("catégorie invalide").optional(),
+  }),
+);
+
+export type SalesCategoriesQuery = z.infer<typeof salesCategoriesQuerySchema>;
+export type SalesCategoriesQueryInput = z.input<
+  typeof salesCategoriesQuerySchema
+>;

@@ -1,5 +1,6 @@
 import type { IsoDate } from "../primitives/zod.js";
 import type { ApiDataResponse } from "../types/response.js";
+import type { CategoryBaseDto } from "./categories.js";
 
 /** Inclusive range of Paris calendar dates. */
 export interface SalesAnalyticsDateRangeDto {
@@ -43,3 +44,47 @@ export interface SalesKpisDto {
 }
 
 export type SalesAnalyticsKpisResponse = SalesAnalyticsResponse<SalesKpisDto>;
+
+/** A category on the way from the top level down to the opened one. */
+export interface SalesCategoryRefDto {
+  id: CategoryBaseDto["id"];
+  name: string;
+}
+
+/**
+ * One category of `GET /sales-transactions/analytics/categories`, with every
+ * category under it. Sale lines minus Refund lines; each whole-transaction
+ * discount is shared across its transaction's lines pro rata to line value.
+ */
+export interface SalesCategoryRowDto {
+  /**
+   * null: items with no category ("Sans catégorie"). The opened category's
+   * own id: the items attached directly to it.
+   */
+  category_id: CategoryBaseDto["id"] | null;
+  name: string;
+  /** Can be opened with `parent_id`. */
+  has_subcategories: boolean;
+  net_revenue: number;
+  /** Quantity sold − quantity refunded. */
+  quantity: number;
+  /** Share of the listed categories' net revenue (of net revenue at the top level), 0–1. */
+  share: number;
+  /** Net revenue / quantity; 0 when the quantity is not positive. */
+  average_price: number;
+}
+
+/** `GET /sales-transactions/analytics/categories`. Amounts in euros, rounded to the cent. */
+export interface SalesCategoriesDto {
+  /** From the top-level category down to the opened one (`parent_id`); empty at the top level. */
+  path: SalesCategoryRefDto[];
+  /** Sum of the rows: net revenue at the top level. Rows are rounded so they add up to it. */
+  net_revenue: number;
+  /** Sum of the rows: items sold at the top level. */
+  quantity: number;
+  /** Highest net revenue first. */
+  categories: SalesCategoryRowDto[];
+}
+
+export type SalesAnalyticsCategoriesResponse =
+  SalesAnalyticsResponse<SalesCategoriesDto>;
