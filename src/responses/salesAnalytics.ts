@@ -1,5 +1,6 @@
 import type { IsoDate } from "../primitives/zod.js";
 import type { ApiDataResponse } from "../types/response.js";
+import type { FrenchPostalCode } from "../primitives/zod.js";
 
 /** Inclusive range of Paris calendar dates. */
 export interface SalesAnalyticsDateRangeDto {
@@ -43,3 +44,29 @@ export interface SalesKpisDto {
 }
 
 export type SalesAnalyticsKpisResponse = SalesAnalyticsResponse<SalesKpisDto>;
+
+/** A postal code's Sales in the range. Amounts in euros, rounded to the cent. */
+export interface SalesPostalCodeDto {
+  postal_code: FrenchPostalCode;
+  /**
+   * Sales with this postal code − the Refunds of such Sales made in the range
+   * (a Refund has no postal code of its own: it takes its Sale's).
+   */
+  net_revenue: number;
+  sales_count: number;
+  /** Gross revenue of these Sales / sales count. */
+  average_basket: number;
+}
+
+/** `GET /sales-transactions/analytics/postal-codes`. The till does not require a postal code. */
+export interface SalesPostalCodesDto {
+  /** The 10 postal codes with the highest net revenue, highest first. Only codes with a Sale in the range. */
+  postal_codes: SalesPostalCodeDto[];
+  /** Sales that have a postal code. */
+  sales_with_postal_code: number;
+  /** All Sales. */
+  sales_count: number;
+}
+
+export type SalesAnalyticsPostalCodesResponse =
+  SalesAnalyticsResponse<SalesPostalCodesDto>;
