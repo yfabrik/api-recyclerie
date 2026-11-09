@@ -43,3 +43,37 @@ export interface SalesKpisDto {
 }
 
 export type SalesAnalyticsKpisResponse = SalesAnalyticsResponse<SalesKpisDto>;
+
+/** Bucket size of the revenue timeline, picked by the server from the length of the current range. */
+export type SalesTimelineStep = "day" | "week" | "month";
+
+/** One bucket of the revenue timeline. Amounts in euros, rounded to the cent. */
+export interface SalesTimelineBucketDto {
+  /** First Paris calendar day of the bucket: a partial week or month at the edge starts on its real date. */
+  date_from: IsoDate;
+  /** Last Paris calendar day of the bucket, inclusive. */
+  date_to: IsoDate;
+  /** Gross revenue − refunded. */
+  net_revenue: number;
+  /** Sum of Sales. */
+  gross_revenue: number;
+  /** Sum of Refunds made in the bucket, positive. */
+  refunded_amount: number;
+  sales_count: number;
+}
+
+/** `GET /sales-transactions/analytics/timeline`. */
+export interface SalesTimelineDto {
+  /** Chosen on the current range: day up to 31 days, Monday week up to 184 days, month beyond. Same in the comparison. */
+  step: SalesTimelineStep;
+  /**
+   * Every bucket of the range, in order, empty ones as 0. Never null in the
+   * current series. The comparison has one entry per current bucket, at the
+   * same position: that bucket shifted onto the comparison range (by days for
+   * day and week steps, by months for the month step) and clipped to it, or
+   * null where it falls past the end of a shorter comparison range.
+   */
+  buckets: (SalesTimelineBucketDto | null)[];
+}
+
+export type SalesAnalyticsTimelineResponse = SalesAnalyticsResponse<SalesTimelineDto>;
