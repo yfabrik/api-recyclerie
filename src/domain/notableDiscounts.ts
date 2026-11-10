@@ -37,8 +37,11 @@ export const WHOLE_TRANSACTION_DISCOUNT_GROUPS: readonly {
   { key: "other", label: "Autres" },
 ];
 
-/** A Sale's whole-transaction discount as stored: `value` is a DECIMAL string on MariaDB. */
-export type StoredGlobalPromotion = {
+/**
+ * A Sale's whole-transaction discount as stored (`TransactionGlobalPromotion`
+ * row, or the `global_promotion` virtuals): `value` is a DECIMAL string on MariaDB.
+ */
+export type StoredWholeTransactionDiscount = {
   type?: PromotionType | null;
   value?: number | string | null;
 };
@@ -49,13 +52,13 @@ export type StoredGlobalPromotion = {
  * missing type counts as a percent, then type + value must both match.
  */
 export const wholeTransactionDiscountKey = (
-  promotion: StoredGlobalPromotion | null | undefined,
+  discount: StoredWholeTransactionDiscount | null | undefined,
 ): WholeTransactionDiscountKey | null => {
-  const value = Number(promotion?.value ?? 0);
+  const value = Number(discount?.value ?? 0);
   if (!(value > 0)) return null;
-  const type = promotion?.type ?? "percent";
+  const type = discount?.type ?? "percent";
   const notable = NOTABLE_DISCOUNTS.find(
-    (discount) => discount.type === type && discount.value === value,
+    (candidate) => candidate.type === type && candidate.value === value,
   );
   return notable ? notableDiscountKey(notable) : "other";
 };
