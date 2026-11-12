@@ -37,6 +37,8 @@ export interface TaskDto extends TaskBaseDto {
   day_of_week: Weekday | null;
   Recyclery?: RecycleryRefDto | null | undefined;
   Employees?: EmployeeDto[] | undefined;
+  /** Only with `include=timeRanges` on `GET /api/tasks`: every Employee's ranges on this Task, flat. */
+  timeRanges?: TimeRangeDto[] | undefined;
 }
 
 /** An assigned Employee as returned by `GET /api/tasks/:id/employees`, with its ranges on that Task. */
