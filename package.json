@@ -94,6 +94,10 @@
       "types": "./dist/schemas/recycleries.d.ts",
       "import": "./dist/schemas/recycleries.js"
     },
+    "./schemas/salesAnalytics": {
+      "types": "./dist/schemas/salesAnalytics.d.ts",
+      "import": "./dist/schemas/salesAnalytics.js"
+    },
     "./schemas/salesTransactions": {
       "types": "./dist/schemas/salesTransactions.d.ts",
       "import": "./dist/schemas/salesTransactions.js"
@@ -198,6 +202,10 @@
       "types": "./dist/responses/recycleries.d.ts",
       "import": "./dist/responses/recycleries.js"
     },
+    "./responses/salesAnalytics": {
+      "types": "./dist/responses/salesAnalytics.d.ts",
+      "import": "./dist/responses/salesAnalytics.js"
+    },
     "./responses/salesTransactions": {
       "types": "./dist/responses/salesTransactions.d.ts",
       "import": "./dist/responses/salesTransactions.js"
@@ -230,6 +238,10 @@
       "types": "./dist/responses/waste.d.ts",
       "import": "./dist/responses/waste.js"
     },
+    "./domain/calendar": {
+      "types": "./dist/domain/calendar.d.ts",
+      "import": "./dist/domain/calendar.js"
+    },
     "./domain/cart": {
       "types": "./dist/domain/cart.d.ts",
       "import": "./dist/domain/cart.js"
@@ -241,6 +253,10 @@
     "./domain/date": {
       "types": "./dist/domain/date.d.ts",
       "import": "./dist/domain/date.js"
+    },
+    "./domain/notableDiscounts": {
+      "types": "./dist/domain/notableDiscounts.d.ts",
+      "import": "./dist/domain/notableDiscounts.js"
     },
     "./domain/timeRange": {
       "types": "./dist/domain/timeRange.d.ts",
