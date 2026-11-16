@@ -156,4 +156,75 @@ describe("clampRangeToWindow", () => {
   it("returns null when the window is shorter than the minimum", () => {
     expect(clampRangeToWindow([h(9), h(10)], { start: h(9), end: h(9, 10) })).toBeNull();
   });
+
+  describe("on a Task that starts and ends off the grid", () => {
+    const task = { start: h(10, 1), end: h(12, 7) };
+    const wholeTask = task;
+
+    it("grows a collapsed range from the Task's start to the leftover before the grid, not to 10:16", () => {
+      expect(clampRangeToWindow([h(10, 1), h(10, 1)], wholeTask, task)).toEqual([
+        h(10, 1),
+        h(10, 15),
+      ]);
+    });
+
+    it("grows a collapsed range on the grid to the next full minimum", () => {
+      expect(clampRangeToWindow([h(11, 45), h(11, 45)], wholeTask, task)).toEqual([
+        h(11, 45),
+        h(12),
+      ]);
+    });
+
+    it("grows a collapsed range at the last grid line to the Task's own end", () => {
+      expect(clampRangeToWindow([h(12), h(12)], wholeTask, task)).toEqual([h(12), h(12, 7)]);
+    });
+
+    it("moves the start back onto the grid when a collapsed range sits on the Task's end", () => {
+      expect(clampRangeToWindow([h(12, 7), h(12, 7)], wholeTask, task)).toEqual([
+        h(12),
+        h(12, 7),
+      ]);
+    });
+
+    it("leaves a valid short leftover range alone", () => {
+      expect(clampRangeToWindow([h(10, 1), h(10, 15)], wholeTask, task)).toEqual([
+        h(10, 1),
+        h(10, 15),
+      ]);
+    });
+
+    it("returns the whole window when it is itself a valid leftover", () => {
+      const leftover = { start: h(10, 1), end: h(10, 15) };
+      expect(clampRangeToWindow([h(10, 1), h(10, 1)], leftover, task)).toEqual([
+        h(10, 1),
+        h(10, 15),
+      ]);
+    });
+
+    it("never produces an edge that is off the grid and not the Task's, from any pair of valid positions", () => {
+      // The positions a slider thumb can take: the grid, plus the Task's own edges.
+      const positions = [task.start];
+      for (let value = h(10, 15); value < task.end; value += TIME_RANGE_STEP_MINUTES) {
+        positions.push(value);
+      }
+      positions.push(task.end);
+
+      for (const start of positions) {
+        for (const end of positions.filter((position) => position >= start)) {
+          const clamped = clampRangeToWindow([start, end], wholeTask, task);
+          expect(clamped, `${start}-${end}`).not.toBeNull();
+          const [clampedStart, clampedEnd] = clamped ?? [0, 0];
+          expect(
+            clampedStart % TIME_RANGE_STEP_MINUTES === 0 || clampedStart === task.start,
+            `start of ${start}-${end}`,
+          ).toBe(true);
+          expect(
+            clampedEnd % TIME_RANGE_STEP_MINUTES === 0 || clampedEnd === task.end,
+            `end of ${start}-${end}`,
+          ).toBe(true);
+          expect(clampedEnd).toBeGreaterThan(clampedStart);
+        }
+      }
+    });
+  });
 });

@@ -55,6 +55,82 @@ describe("validateTimeRange", () => {
     expect(check({ start: h(10), end: h(11, 10) })).toEqual({ ok: false, reason: "off-grid" });
   });
 
+  describe("with a Task that is itself off the grid", () => {
+    const offGridTask = { task: { start: h(10, 1), end: h(12, 7) } };
+
+    it("accepts a range covering the whole Task", () => {
+      expect(check({ start: h(10, 1), end: h(12, 7) }, offGridTask)).toEqual({ ok: true });
+    });
+
+    it("accepts a range starting at the Task's start and ending on the grid", () => {
+      expect(check({ start: h(10, 1), end: h(11) }, offGridTask)).toEqual({ ok: true });
+    });
+
+    it("accepts a range starting on the grid and ending at the Task's end", () => {
+      expect(check({ start: h(10, 30), end: h(12, 7) }, offGridTask)).toEqual({ ok: true });
+    });
+
+    it("accepts a range strictly inside the Task, on the grid", () => {
+      expect(check({ start: h(10, 15), end: h(11, 45) }, offGridTask)).toEqual({ ok: true });
+    });
+
+    it("accepts the short stretch between the Task's start and the next grid line", () => {
+      expect(check({ start: h(10, 1), end: h(10, 15) }, offGridTask)).toEqual({ ok: true });
+    });
+
+    it("accepts the short stretch between the last grid line and the Task's end", () => {
+      expect(check({ start: h(12), end: h(12, 7) }, offGridTask)).toEqual({ ok: true });
+    });
+
+    it("accepts a range covering a whole Task shorter than the minimum", () => {
+      const tinyTask = { task: { start: h(10, 1), end: h(10, 10) } };
+      expect(check({ start: h(10, 1), end: h(10, 10) }, tinyTask)).toEqual({ ok: true });
+    });
+
+    it("still rejects a short range in the middle of the Task", () => {
+      expect(check({ start: h(11), end: h(11, 10) }, offGridTask)).toEqual({
+        ok: false,
+        reason: "too-short",
+      });
+    });
+
+    it("still rejects a short range at the Task's start that does not end on the grid", () => {
+      expect(check({ start: h(10, 1), end: h(10, 10) }, offGridTask)).toEqual({
+        ok: false,
+        reason: "too-short",
+      });
+    });
+
+    it("still rejects an empty range at the Task's edge", () => {
+      expect(check({ start: h(10, 1), end: h(10, 1) }, offGridTask)).toEqual({
+        ok: false,
+        reason: "too-short",
+      });
+    });
+
+    it("still rejects an off-grid edge that is not the Task's edge", () => {
+      expect(check({ start: h(10, 5), end: h(11) }, offGridTask)).toEqual({
+        ok: false,
+        reason: "off-grid",
+      });
+      expect(check({ start: h(10, 1), end: h(11, 10) }, offGridTask)).toEqual({
+        ok: false,
+        reason: "off-grid",
+      });
+    });
+
+    it("does not let the Task's start excuse an off-grid end, or the reverse", () => {
+      expect(check({ start: h(10, 15), end: h(12, 10) }, offGridTask)).toEqual({
+        ok: false,
+        reason: "off-grid",
+      });
+      expect(check({ start: h(10, 4), end: h(12, 7) }, offGridTask)).toEqual({
+        ok: false,
+        reason: "off-grid",
+      });
+    });
+  });
+
   it("rejects a range starting before or ending after the Task", () => {
     expect(check({ start: h(8, 45), end: h(10) })).toEqual({ ok: false, reason: "outside-task" });
     expect(check({ start: h(12), end: h(13, 15) })).toEqual({ ok: false, reason: "outside-task" });
@@ -179,21 +255,67 @@ describe("assignableWindows", () => {
     ]);
   });
 
-  it("pulls edges inward onto the 15-minute grid", () => {
+  it("keeps the Task's own off-grid edges, since a range may start or end there", () => {
     expect(
       assignableWindows({
         task: { start: h(9, 10), end: h(10, 50) },
         workWindows: [{ start: h(8), end: h(18) }],
         otherRanges: [],
       }),
-    ).toEqual([{ start: h(9, 15), end: h(10, 45) }]);
+    ).toEqual([{ start: h(9, 10), end: h(10, 50) }]);
   });
 
-  it("drops windows that no longer hold a minimum range once on the grid", () => {
+  it("still pulls onto the grid an edge that comes from a Workday or another range", () => {
     expect(
       assignableWindows({
-        task: { start: h(9, 10), end: h(9, 25) },
+        task: { start: h(9), end: h(12) },
+        workWindows: [{ start: h(9, 7), end: h(18) }],
+        otherRanges: [{ start: h(11, 2), end: h(12) }],
+      }),
+    ).toEqual([{ start: h(9, 15), end: h(11) }]);
+  });
+
+  it("offers the leftover between an off-grid Task start and another range", () => {
+    const context = {
+      task: { start: h(10, 1), end: h(12) },
+      workWindows: [{ start: h(8), end: h(18) }],
+      otherRanges: [{ start: h(10, 15), end: h(12) }],
+    };
+    expect(assignableWindows(context)).toEqual([{ start: h(10, 1), end: h(10, 15) }]);
+    expect(firstFreeWindow(context)).toEqual({ start: h(10, 1), end: h(10, 15) });
+  });
+
+  it("offers the leftover between another range and an off-grid Task end", () => {
+    expect(
+      assignableWindows({
+        task: { start: h(10), end: h(12, 7) },
         workWindows: [{ start: h(8), end: h(18) }],
+        otherRanges: [{ start: h(10), end: h(12) }],
+      }),
+    ).toEqual([{ start: h(12), end: h(12, 7) }]);
+  });
+
+  it("does not offer a short window that does not touch the Task's edge", () => {
+    expect(
+      assignableWindows({
+        task: { start: h(10, 1), end: h(12) },
+        workWindows: [{ start: h(8), end: h(18) }],
+        otherRanges: [
+          { start: h(10, 1), end: h(10, 30) },
+          { start: h(10, 40), end: h(12) },
+        ],
+      }),
+    ).toEqual([]);
+  });
+
+  it("drops windows shorter than the minimum range", () => {
+    expect(
+      assignableWindows({
+        task: { start: h(9), end: h(12) },
+        workWindows: [
+          { start: h(8), end: h(9, 10) },
+          { start: h(11, 55), end: h(18) },
+        ],
         otherRanges: [],
       }),
     ).toEqual([]);
