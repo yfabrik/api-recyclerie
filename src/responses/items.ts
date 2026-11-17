@@ -39,6 +39,12 @@ export interface LabeledItemDto extends LabeledItemBaseDto {
   createdBy?: UserRefDto | null | undefined;
 }
 
+/** A labeled item as the item endpoints return it (list, barcode lookup, create, update). */
+export interface LabeledItemWithSaleDto extends LabeledItemDto {
+  /** Most recent Sale listing the item; Refunds never count. `null` when no Sale lists it. */
+  sale_id: number | null;
+}
+
 export interface LabeledItemStatsDto {
   total_items?: number | undefined;
   available_items?: number | null | undefined;
@@ -47,10 +53,12 @@ export interface LabeledItemStatsDto {
   total_value?: number | null | undefined;
 }
 
-export type ListLabeledItemsResponse = ApiPaginatedResponse<LabeledItemDto>;
-export type DetailLabeledItemResponse = ApiDataResponse<LabeledItemDto>;
-export type CreateLabeledItemResponse = ApiDataResponse<LabeledItemDto[]>;
-export type UpdateLabeledItemResponse = ApiDataResponse<LabeledItemDto>;
+export type ListLabeledItemsResponse = ApiPaginatedResponse<LabeledItemWithSaleDto>;
+export type DetailLabeledItemResponse = ApiDataResponse<LabeledItemWithSaleDto>;
+export type CreateLabeledItemResponse = ApiDataResponse<LabeledItemWithSaleDto[]>;
+export type UpdateLabeledItemResponse = ApiDataResponse<LabeledItemWithSaleDto>;
 export type DeleteLabeledItemResponse = ApiMessageResponse;
 export type TagLabeledItemSoldResponse = ApiMessageResponse;
+/** `POST /api/labeled-items/:id/available`: the reverse of mark-as-sold. */
+export type TagLabeledItemAvailableResponse = ApiMessageResponse;
 export type LabeledItemStatsResponse = ApiDataResponse<LabeledItemStatsDto | null>;
